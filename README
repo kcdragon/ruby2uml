@@ -1,3 +1,2 @@
-Given a set of source code, derive a UML diagram.
-Still lots of work to be done.
-Does not work yet.
+Extract a UML diagram from source code.
+Does NOT work. Still lots of work to do.
