@@ -56,22 +56,40 @@ public
     assert_edge_type foo, bar, :aggregation
   end
 
-#  def test_program_with_instance_variable_aggregation_one_to_many
-#    program = <<-EOS
-#      class Foo
-#        def initialize
-#          @bar = Array.new
-#          @bar << Bar.new
-#          @bar << Bar.new
-#        end
-#      end
-#    EOS
-#    graph = analyze_program(program).graph
+'''
+  def test_program_with_instance_variable_aggregation_one_to_many
+    program = <<-EOS
+      class Foo
+        def initialize
+          @bar = Array.new
+          @bar << Bar.new
+          @bar << Bar.new
+        end
+      end
+    EOS
+    graph = analyze_program(program).graph
 
-#    foo, bar, array = assert_and_get_vertices graph, :Foo, :Bar, :Array
-#    assert_edge_type foo, array, :aggregation
-#    assert_edge_type foo, bar, :aggregation
-#  end
+    foo, bar, array = assert_and_get_vertices graph, :Foo, :Bar, :Array
+    assert_edge_type foo, array, :aggregation
+    assert_edge_type foo, bar, :aggregation
+  end
+'''
+
+  def test_program_with_class_variable_aggregation_one_to_one
+    program = <<-EOS
+      class Foo
+        def self.hello
+          @@bar = Bar.new
+        end
+      end
+    EOS
+    graph = analyze_program(program).graph
+
+    foo, bar = assert_and_get_vertices graph, :Foo, :Bar
+    assert_edge_type foo, bar, :aggregation
+  end
+
+  
 
 private
   # precondition: vertices is non-empty

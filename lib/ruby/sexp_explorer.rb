@@ -56,20 +56,22 @@ module Ruby
     end
   end
 
-  # TODO implement aggregation
-  # TODO implement for instance variabels, i.e. @ vars
-  # TODO implement for class variables, i.e. @@ vars
+  # TODO implement 1-n aggregation, punting on it for now
   class AggregationRelationship < Relationship
     def each sexp, &block
-      sexp.each_of_type(:defn) do |method_node|
-        
+      each_of_type :defn, sexp, &block # defn is instance method
+      each_of_type :defs, sexp, &block # defs is class method
+    end
+    
+  private
+    def each_of_type type, sexp, &block
+      sexp.each_of_type(type) do |method_node|
         get_method_body(method_node).each_sexp do |sub_sexp|
           case sub_sexp.first
-          when :iasgn
+          when :iasgn, :cvasgn
             rhs = sub_sexp.rest.rest #right-hand-side of assignment
             rhs.each_of_type(:const) do |node|
               name = node.rest.head
-
               # REFACTOR extract method to superclass
               yield_wrapper = lambda { return name, Graph::ClassVertex, @ef.get_edge(:aggregation) }
               if block_given?
@@ -77,18 +79,14 @@ module Ruby
               else
                 yield yield_wrapper.call
               end
-
             end
           end
         end
-
       end
     end
     
-  private
     # precondition: sexp is a method node
     def get_method_body sexp
-      # three "rest" calls will skip over type, method name and arguments
       sexp.rest.rest.rest
     end
   end
