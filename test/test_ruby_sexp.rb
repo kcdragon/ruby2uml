@@ -4,6 +4,10 @@ require_relative '../lib/graph_generator'
 require_relative '../lib/graph/digraph'
 require_relative '../lib/graph/edge'
 require_relative '../lib/ruby/class_sexp_explorer'
+require_relative '../lib/ruby/aggregation_relationship'
+require_relative '../lib/ruby/dependency_relationship'
+#require_relative '../lib/ruby/implements_relationship'
+require_relative '../lib/ruby/parent_relationship'
 require_relative '../lib/sexp_factory'
 
 class TestRubySexp < Test::Unit::TestCase

@@ -3,6 +3,10 @@ require 'pp'
 require_relative 'graph_generator'
 require_relative 'graph/digraph'
 require_relative 'ruby/class_sexp_explorer'
+require_relative 'ruby/aggregation_relationship'
+require_relative 'ruby/dependency_relationship'
+#require_relative 'ruby/implements_relationship'
+require_relative 'ruby/parent_relationship'
 require_relative 'sexp_factory'
 
 # REFACTOR into command line arguments
