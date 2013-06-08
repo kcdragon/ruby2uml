@@ -3,12 +3,12 @@ require 'test/unit'
 require_relative '../lib/graph_generator'
 require_relative '../lib/graph/digraph'
 require_relative '../lib/graph/edge'
-require_relative '../lib/ruby/sexp_explorer'
+require_relative '../lib/ruby/class_sexp_explorer'
 require_relative '../lib/sexp_factory'
 
 class TestRubySexp < Test::Unit::TestCase
   def setup
-    @explorer = Ruby::SexpExplorer.instance
+    @explorer = Ruby::ClassSexpExplorer.instance
     @explorer.register_relationship Ruby::AggregationRelationship.new
     @explorer.register_relationship Ruby::ParentRelationship.new
     @explorer.register_relationship Ruby::DependencyRelationship.new
