@@ -33,7 +33,7 @@ public
     program = "class Foo < Bar ; end"
     graph = analyze_program(program).graph
 
-    foo, bar = assert_and_get_vertices graph, :Foo, :Bar
+    foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :generalization
   end
 
@@ -41,7 +41,7 @@ public
     program = "class Foo \n def hello \n return Bar.new \n end \n end"
     graph = analyze_program(program).graph
 
-    foo, bar = assert_and_get_vertices graph, :Foo, :Bar
+    foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :dependency
   end
 
@@ -55,28 +55,28 @@ public
     EOS
     graph = analyze_program(program).graph
 
-    foo, bar = assert_and_get_vertices graph, :Foo, :Bar
+    foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :aggregation
   end
 
-'''
-  def test_program_with_instance_variable_aggregation_one_to_many
-    program = <<-EOS
-      class Foo
-        def initialize
-          @bar = Array.new
-          @bar << Bar.new
-          @bar << Bar.new
-        end
-      end
-    EOS
-    graph = analyze_program(program).graph
 
-    foo, bar, array = assert_and_get_vertices graph, :Foo, :Bar, :Array
-    assert_edge_type foo, array, :aggregation
-    assert_edge_type foo, bar, :aggregation
-  end
-'''
+#  def test_program_with_instance_variable_aggregation_one_to_many
+#    program = <<-EOS
+#      class Foo
+#        def initialize
+#          @bar = Array.new
+#          @bar << Bar.new
+#          @bar << Bar.new
+#        end
+#      end
+#    EOS
+#    graph = analyze_program(program).graph
+#
+#    foo, bar, array = assert_and_get_vertices graph, 'Foo', 'Bar', 'Array'
+#    assert_edge_type foo, array, :aggregation
+#    assert_edge_type foo, bar, :aggregation
+#  end
+
 
   def test_program_with_class_variable_aggregation_one_to_one
     program = <<-EOS
@@ -88,8 +88,18 @@ public
     EOS
     graph = analyze_program(program).graph
 
-    foo, bar = assert_and_get_vertices graph, :Foo, :Bar
+    foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :aggregation
+  end
+
+  def test_program_with_multiple_classes
+    assert true
+    # TODO implement test program with multiple classes
+  end
+
+  def test_program_with_include_module
+    assert true
+    # TODO implement test program with include
   end
 
   
@@ -102,8 +112,9 @@ private
       assert graph.has_vertex?(v), "graph must contain vertex #{v}"
     end
     
-    foo = graph.get_vertex :Foo
-    bar = graph.get_vertex :Bar
+    # FIXME cannot hard code theses values
+    foo = graph.get_vertex 'Foo'
+    bar = graph.get_vertex 'Bar'
     return foo, bar
   end
 

@@ -20,7 +20,7 @@ module Ruby
           when :iasgn, :cvasgn
             rhs = sub_sexp.rest.rest #right-hand-side of assignment
             rhs.each_of_type(:const) do |node|
-              name = node.rest.head
+              name = node.rest.head.to_s
               yield_wrapper = lambda { return name, Graph::ClassVertex, @ef.get_edge(:aggregation) }
               if block_given?
                 block.call yield_wrapper.call

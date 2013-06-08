@@ -28,7 +28,7 @@ module Ruby
     # not sure how to do this, easisest way would be for class_sexp to reach "up" into parent element, but not sure if that is possible
     # could also explore modules first and then pass a reference to module name to each embedded class
     def get_subject
-      return :class, lambda { |sexp| sexp.rest.head }, Graph::ClassVertex
+      return :class, lambda { |sexp| sexp.rest.head.to_s }, Graph::ClassVertex
     end
     
     def each sexp, &block

@@ -9,10 +9,11 @@ module Ruby
       parent = nil
       parent_node = sexp.rest.rest.head
       if parent_node != nil # class has a parent
-        parent = parent_node.rest.head
+        parent = parent_node.rest.head.to_s
       end
       
       # REFACTOR out edge factory into instance variable     
+      # FIXME shouldn't yield anything if parent is nil
       yield_wrapper = lambda { return parent, Graph::ClassVertex, @ef.get_edge(:generalization) }
       if block_given?
         block.call yield_wrapper.call
