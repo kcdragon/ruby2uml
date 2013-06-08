@@ -1,44 +1,42 @@
-# NOTE: "head" and "rest" (aliased from "sexp_type" and "sexp_body") method calls on Sexp objects are simliar to Lisp's functions "car" and "cdr"
-
 class GraphGenerator
   attr_reader :graph
 
-  def initialize graph
-    
+  def initialize graph, explorer, edge_factory
+    @graph = graph
+    @explorer = explorer
+    @edge_factory = edge_factory
   end
 
   def analyze_sexp sexp
-    sexp.find_nodes(:class).each do |class_node|
-      class_name = get_class_name class_node
-      parent_name = get_parent_name class_node
-      depends_on = Array.new
-      class_node.each_of_type(:call) do |call_node|
-        call_node.sexp_body.each_of_type(:const) do |dependency_node|
-          dependency_name = dependency_node.rest.head.to_s
-          depends_on << dependency_name
-        end
+    subject_type, locator, vertex_class = @explorer.get_subject
+    if sexp.first == subject_type # if sexp is a single subject, find_node will not pick it up, need to check for this
+      analyze_subject sexp, locator, vertex_class
+    else
+      sexp.find_node(subject_type).each do |subject_node|
+        analyze_subject subject_node, locator, vertex_class
       end
-      puts "Class: #{class_name}"
-      puts "\tGeneralizes: #{parent_name}"
-      puts "\tDepends On: #{depends_on.to_s}"
-      puts
-    end
+    end    
   end
 
-private
-
-  # precondition: node's type is :class
-  def get_class_name node
-    node.rest.head.to_s
-  end
-
-  # precondition: node's type is :class
-  def get_parent_name node
-    parent = nil
-    parent_node = node.rest.rest.head
-    if parent_node != nil # class has a parent
-      parent = parent_node.rest.head.to_s
+  def analyze_subject subject_node, locator, vertex_class
+    subject_name = locator.call(subject_node)
+    subject = nil
+    # REFACTOR extract method
+    if @graph.has_vertex? subject_name
+      subject = @graph.get_vertex subject_name
+    else
+      subject = @graph.add_vertex vertex_class.new(subject_name)
     end
-    parent
+    
+    @explorer.each(subject_node) do |name, vertex_class, edge|
+      vertex = nil
+      # REFACTOR extract method
+      if @graph.has_vertex? name
+        vertex = @graph.get_vertex name
+      else
+        vertex = @graph.add_vertex vertex_class.new(name)
+      end
+      subject.add_edge edge, vertex
+    end
   end
 end

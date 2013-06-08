@@ -22,20 +22,39 @@ module Graph
     def eql? object
       object.kind_of?(self.class)
     end
+
+    def hash
+      1
+    end
   end
 
   class AggregationEdge < Edge
+    def to_s
+      'aggregates'
+    end
   end
 
   class CompositionEdge < Edge
+    def to_s
+      'composes'
+    end
   end
 
   class ImplementsEdge < Edge
+    def to_s
+      'implements'
+    end
   end
 
   class GeneralizationEdge < Edge
+    def to_s
+      'generalizes'
+    end
   end
 
   class DependencyEdge < Edge
+    def to_s
+      'depends on'
+    end
   end
 end

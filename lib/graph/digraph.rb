@@ -16,6 +16,7 @@ module Graph
 
     def add_vertex vertex
       @vertices[vertex.name] = vertex
+      vertex
     end
 
     def each &block
@@ -24,6 +25,10 @@ module Graph
 
     def each_vertex &block
       @vertices.each_value &block
+    end
+
+    def to_s
+      @vertices.values.map(&:to_s).join("\n")
     end
   end
 end

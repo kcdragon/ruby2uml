@@ -12,6 +12,7 @@ describe Vertex do
   it { should respond_to :name }
   it { should respond_to :add_edge }
   it { should respond_to :get_edge }
+  it { should respond_to :[] }
 
   it "should add aggregation edge" do
     ef = EdgeFactory.instance

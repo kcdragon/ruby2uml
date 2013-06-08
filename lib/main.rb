@@ -1,20 +1,19 @@
 require 'pp'
 
 require_relative 'graph_generator'
+require_relative 'graph/digraph'
+require_relative 'ruby/sexp_explorer'
 require_relative 'sexp_factory'
 
+# REFACTOR into command line arguments
 FILE_NAME = 'data/edge.rb'
 file = File.open FILE_NAME, 'rb' # open file as binary to read into one string
 program = file.read
 
-# TODO implement aggregation
-# TODO implement composition
-# cvasgn for class variable
-# ivasgn for instance variable
-
-# TODO implement implements
-
 sexp = SexpFactory.instance.get_sexp program, 'rb'
 
-gen = GraphGenerator.new nil
-gen.analyze_sexp sexp
+graph = Graph::Digraph.new
+generator = GraphGenerator.new graph, Ruby::SexpExplorer.new, Graph::EdgeFactory.instance
+generator.analyze_sexp sexp
+
+puts graph

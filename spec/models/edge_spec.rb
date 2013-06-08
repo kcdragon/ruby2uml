@@ -6,6 +6,7 @@ describe EdgeFactory do
   it "should contain aggregation" do
     subject.get_edge(:aggregation).should_not be_nil
     subject.get_edge(:aggregation).should eql(AggregationEdge.new)
+    subject.get_edge(:aggregation).should_not eql(CompositionEdge.new)
   end
 
   it "should contain composition" do
