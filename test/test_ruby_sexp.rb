@@ -112,10 +112,11 @@ private
       assert graph.has_vertex?(v), "graph must contain vertex #{v}"
     end
     
-    # FIXME cannot hard code theses values
-    foo = graph.get_vertex 'Foo'
-    bar = graph.get_vertex 'Bar'
-    return foo, bar
+    vars = Array.new
+    vertices.each do |v|
+      vars << graph.get_vertex(v)
+    end
+    return vars
   end
 
   def assert_edge_type from, to, type
