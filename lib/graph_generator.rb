@@ -1,3 +1,4 @@
+# REFACTOR change class name to something like SexpTraverser, since that is what it is doing
 class GraphGenerator
   attr_reader :graph
 
@@ -20,23 +21,21 @@ class GraphGenerator
 
   def analyze_subject subject_node, locator, vertex_class
     subject_name = locator.call(subject_node)
-    subject = nil
-    # REFACTOR extract method
-    if @graph.has_vertex? subject_name
-      subject = @graph.get_vertex subject_name
-    else
-      subject = @graph.add_vertex vertex_class.new(subject_name)
-    end
+    subject = get_or_create_vertex subject_name, vertex_class
     
     @explorer.each(subject_node) do |name, vertex_class, edge|
-      vertex = nil
-      # REFACTOR extract method
-      if @graph.has_vertex? name
-        vertex = @graph.get_vertex name
-      else
-        vertex = @graph.add_vertex vertex_class.new(name)
-      end
+      vertex = get_or_create_vertex name, vertex_class
       subject.add_edge edge, vertex
     end
+  end
+
+  def get_or_create_vertex name, vertex_class
+    vertex = nil
+    if @graph.has_vertex? name
+      vertex = @graph.get_vertex name
+    else
+      vertex = @graph.add_vertex vertex_class.new(name)
+    end
+    return vertex
   end
 end
