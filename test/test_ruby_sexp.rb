@@ -8,7 +8,10 @@ require_relative '../lib/sexp_factory'
 
 class TestRubySexp < Test::Unit::TestCase
   def setup
-    @explorer = Ruby::SexpExplorer.new
+    @explorer = Ruby::SexpExplorer.instance
+    @explorer.register_relationship Ruby::AggregationRelationship.new
+    @explorer.register_relationship Ruby::ParentRelationship.new
+    @explorer.register_relationship Ruby::DependencyRelationship.new
     @edge_factory = Graph::EdgeFactory.instance
   end
 

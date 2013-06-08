@@ -10,15 +10,23 @@ module Ruby
   # NOTE: "head" and "rest" (aliased from "sexp_type" and "sexp_body") method calls on Sexp objects are simliar to Lisp's functions "car" and "cdr"
   # contains information to tell where in the sexp everything is for ruby
   class SexpExplorer
+    def self.instance
+      @@instance ||= SexpExplorer.new
+    end
+    
     def initialize
-      # REFACTOR VIOLATES open-close principle, need to have relationships register with SexpExplorer
       @ef = Graph::EdgeFactory.instance
       @rels = Array.new
-      @rels << ParentRelationship.new
-      @rels << DependencyRelationship.new
-      @rels << AggregationRelationship.new
     end
 
+    def register_relationship rel
+      rel.explorer = self
+      @rels << rel
+    end
+
+    # TODO prefix class name with module name (if there is one) that the class is nested in
+    # not sure how to do this, easisest way would be for class_sexp to reach "up" into parent element, but not sure if that is possible
+    # could also explore modules first and then pass a reference to module name to each embedded class
     def get_subject
       return :class, lambda { |sexp| sexp.rest.head }, Graph::ClassVertex
     end

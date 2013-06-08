@@ -12,7 +12,7 @@ class GraphGenerator
     if sexp.first == subject_type # if sexp is a single subject, find_node will not pick it up, need to check for this
       analyze_subject sexp, locator, vertex_class
     else
-      sexp.find_node(subject_type).each do |subject_node|
+      sexp.find_nodes(subject_type).each do |subject_node|
         analyze_subject subject_node, locator, vertex_class
       end
     end    

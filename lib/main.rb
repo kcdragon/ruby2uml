@@ -13,7 +13,13 @@ program = file.read
 sexp = SexpFactory.instance.get_sexp program, 'rb'
 
 graph = Graph::Digraph.new
-generator = GraphGenerator.new graph, Ruby::SexpExplorer.new, Graph::EdgeFactory.instance
+
+explorer = Ruby::SexpExplorer.instance
+explorer.register_relationship Ruby::AggregationRelationship.new
+explorer.register_relationship Ruby::ParentRelationship.new
+explorer.register_relationship Ruby::DependencyRelationship.new
+
+generator = GraphGenerator.new(graph, explorer, Graph::EdgeFactory.instance)
 generator.analyze_sexp sexp
 
 puts graph
