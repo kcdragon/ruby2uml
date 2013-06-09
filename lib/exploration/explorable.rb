@@ -39,17 +39,8 @@ module Exploration
       return vertex
     end
 
-    # REFACTOR into VertexFactory
     def create_vertex name, type
-      case type
-      when :class
-        return Graph::ClassVertex.new name
-      #when :module
-        #return ModuleVertex.new name
-      else
-        raise "class: #{name} type: #{type}"
-        #return Graph::Vertex.new name
-      end
+      Graph::VertexFactory.instance.get_vertex name, type
     end
   end
 end
