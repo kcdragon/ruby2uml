@@ -21,7 +21,7 @@ module Exploration
         vertex = get_or_create_vertex graph, name, type
         if not relation.nil?
           o_vertex = get_or_create_vertex graph, o_name, o_type
-          edge = Graph::EdgeFactory.instance.get_edge relation
+          edge = get_edge relation
           vertex.add_edge edge, o_vertex
         end
       end
@@ -41,6 +41,10 @@ module Exploration
 
     def create_vertex name, type
       Graph::VertexFactory.instance.get_vertex name, type
+    end
+
+    def get_edge type
+      Graph::EdgeFactory.instance.get_edge type
     end
   end
 end
