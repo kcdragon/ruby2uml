@@ -1,7 +1,7 @@
 require 'test/unit'
 
 require_relative '../lib/graph/digraph'
-require_relative '../lib/graph/edge'
+require_relative '../lib/graph/edge_factory'
 require_relative '../lib/exploration/class_entity'
 require_relative '../lib/exploration/explorer_builder.rb'
 require_relative '../lib/sexp_factory'
@@ -22,6 +22,8 @@ private
 public
   # NOTE these are not unit tests, they are integration tests, i currently don't have many unit tests for the individual modules
   # TODO move these into an integration folder
+
+  # TODO add checks that Foo and Bar are ClassVertex's
 
   def test_program_with_inheritance
     program = "class Foo < Bar ; end"

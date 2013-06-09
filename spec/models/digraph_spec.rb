@@ -1,14 +1,11 @@
 require_relative '../../lib/graph/digraph'
-require_relative '../../lib/graph/edge'
 require_relative '../../lib/graph/vertex'
 
-include Graph
-
-describe Digraph do
+describe Graph::Digraph do
   before :all do
-    @digraph = Digraph.new
+    @digraph = Graph::Digraph.new
     @vertices = []
-    ['one', 'two', 'three'].each { |s| @vertices << Vertex.new(s) }
+    ['one', 'two', 'three'].each { |s| @vertices << Graph::Vertex.new(s) }
   end
   subject { @digraph }
 

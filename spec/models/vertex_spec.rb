@@ -1,11 +1,9 @@
-require_relative '../../lib/graph/edge'
+require_relative '../../lib/graph/edge_factory'
 require_relative '../../lib/graph/vertex'
 
-include Graph
-
-describe Vertex do
+describe Graph::Vertex do
   before :all do
-    @vertex = Vertex.new 'foo'
+    @vertex = Graph::Vertex.new 'foo'
   end
   subject { @vertex }
 
@@ -15,8 +13,8 @@ describe Vertex do
   it { should respond_to :[] }
 
   it "should add aggregation edge" do
-    ef = EdgeFactory.instance
-    another_vertex = Vertex.new 'bar'
+    ef = Graph::EdgeFactory.instance
+    another_vertex = Graph::Vertex.new 'bar'
     edge = ef.get_edge :aggregation
     lambda {
       subject.add_edge edge, another_vertex

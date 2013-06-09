@@ -1,5 +1,5 @@
 require_relative '../graph/digraph'
-require_relative '../graph/edge'
+require_relative '../graph/edge_factory'
 require_relative '../graph/vertex_factory'
 
 module Exploration
