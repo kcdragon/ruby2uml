@@ -1,6 +1,6 @@
 require 'pp'
 
-require_relative 'graph_generator'
+require_relative 'sexp_traverser'
 require_relative 'graph/digraph'
 require_relative 'ruby/class_sexp_explorer'
 require_relative 'ruby/aggregation_relationship'
@@ -23,7 +23,7 @@ class_explorer.register_relationship Ruby::AggregationRelationship.new
 class_explorer.register_relationship Ruby::ParentRelationship.new
 class_explorer.register_relationship Ruby::DependencyRelationship.new
 
-generator = GraphGenerator.new(graph, class_explorer, Graph::EdgeFactory.instance)
-generator.analyze_sexp sexp
+traverser = SexpTraverser.new(graph, class_explorer, Graph::EdgeFactory.instance)
+traverser.analyze_sexp sexp
 
 puts graph

@@ -1,5 +1,4 @@
-# REFACTOR change class name to something like SexpTraverser, since that is what it is doing
-class GraphGenerator
+class SexpTraverser
   attr_reader :graph
 
   def initialize graph, explorer, edge_factory

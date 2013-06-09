@@ -1,6 +1,6 @@
 require 'test/unit'
 
-require_relative '../lib/graph_generator'
+require_relative '../lib/sexp_traverser'
 require_relative '../lib/graph/digraph'
 require_relative '../lib/graph/edge'
 require_relative '../lib/ruby/class_sexp_explorer'
@@ -24,7 +24,7 @@ private
   def analyze_program program
     sexp = SexpFactory.instance.get_sexp program, 'rb'
     graph = Graph::Digraph.new
-    generator = GraphGenerator.new graph, @explorer, @edge_factory
+    generator = SexpTraverser.new graph, @explorer, @edge_factory
     generator.analyze_sexp sexp
     return generator
   end
