@@ -1,16 +1,13 @@
-require_relative '../graph/edge'
-require_relative '../graph/vertex'
+require_relative 'relation'
 
-require_relative 'relationship'
-
-module Ruby
-  class DependencyRelationship < Relationship
-    def each sexp, &block
+module Exploration
+  class DependencyRelation < Relation
+    def each sexp, context=nil, &block
       # REFACTOR extract this to superclass method
       sexp.each_of_type(:call) do |call_node|
         call_node.rest.each_of_type(:const) do |dependency_node|
           dependency_name = dependency_node.rest.head.to_s
-           yield_wrapper = lambda { return dependency_name, Graph::ClassVertex, @ef.get_edge(:dependency) }
+          yield_wrapper = lambda { return context[:name], context[:type], :dependency, dependency_name, :class }
           if block_given?
             block.call yield_wrapper.call
           else

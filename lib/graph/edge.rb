@@ -14,6 +14,7 @@ module Graph
     end
 
     def get_edge edge_type
+      raise "#{edge_type} of type #{edge_type.class} is not a valid edge type" if not @edge_map.include? edge_type
       @edge_map[edge_type]
     end
   end
@@ -22,7 +23,8 @@ module Graph
     def eql? object
       object.kind_of?(self.class)
     end
-
+    
+    # REFACTOR move hash method to subclasses and have a different hash value for each subclass
     def hash
       1
     end

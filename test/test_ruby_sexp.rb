@@ -1,32 +1,22 @@
 require 'test/unit'
 
-require_relative '../lib/sexp_traverser'
 require_relative '../lib/graph/digraph'
 require_relative '../lib/graph/edge'
-require_relative '../lib/ruby/class_sexp_explorer'
-require_relative '../lib/ruby/aggregation_relationship'
-require_relative '../lib/ruby/dependency_relationship'
-#require_relative '../lib/ruby/implements_relationship'
-require_relative '../lib/ruby/parent_relationship'
+require_relative '../lib/exploration/class_entity'
+require_relative '../lib/exploration/explorer_builder.rb'
 require_relative '../lib/sexp_factory'
 
 class TestRubySexp < Test::Unit::TestCase
   def setup
-    @explorer = Ruby::ClassSexpExplorer.instance
-    @explorer.register_relationship Ruby::AggregationRelationship.new
-    @explorer.register_relationship Ruby::ParentRelationship.new
-    @explorer.register_relationship Ruby::DependencyRelationship.new
     @edge_factory = Graph::EdgeFactory.instance
   end
 
 private
-  # return GraphGenerator
+  # return Digraph
   def analyze_program program
     sexp = SexpFactory.instance.get_sexp program, 'rb'
-    graph = Graph::Digraph.new
-    generator = SexpTraverser.new graph, @explorer, @edge_factory
-    generator.analyze_sexp sexp
-    return generator
+    explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
+    return explorer.generate_graph(sexp)
   end
 
 public
@@ -35,7 +25,7 @@ public
 
   def test_program_with_inheritance
     program = "class Foo < Bar ; end"
-    graph = analyze_program(program).graph
+    graph = analyze_program(program)
 
     foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :generalization
@@ -43,7 +33,7 @@ public
 
   def test_program_with_dependency
     program = "class Foo \n def hello \n return Bar.new \n end \n end"
-    graph = analyze_program(program).graph
+    graph = analyze_program(program)
 
     foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :dependency
@@ -57,7 +47,7 @@ public
         end
       end
     EOS
-    graph = analyze_program(program).graph
+    graph = analyze_program(program)
 
     foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :aggregation
@@ -74,7 +64,7 @@ public
 #        end
 #      end
 #    EOS
-#    graph = analyze_program(program).graph
+#    graph = analyze_program(program)
 #
 #    foo, bar, array = assert_and_get_vertices graph, 'Foo', 'Bar', 'Array'
 #    assert_edge_type foo, array, :aggregation
@@ -90,7 +80,7 @@ public
         end
       end
     EOS
-    graph = analyze_program(program).graph
+    graph = analyze_program(program)
 
     foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
     assert_edge_type foo, bar, :aggregation
@@ -105,8 +95,6 @@ public
     assert true
     # TODO implement test program with include
   end
-
-  
 
 private
   # precondition: vertices is non-empty
