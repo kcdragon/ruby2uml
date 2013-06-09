@@ -1,6 +1,6 @@
 require_relative '../graph/digraph'
 require_relative '../graph/edge'
-require_relative '../graph/vertex'
+require_relative '../graph/vertex_factory'
 
 module Exploration
   # The Explorable mixin provides implementing classes with methods to extract relationships from an +sexp+ object. The class must implement Explorable#each(sexp, context=nil, &block) which yields entities (classes, modules, etc.) and their relationships among each other.
