@@ -18,9 +18,9 @@ module Exploration
       par = ParentRelation.new
 
       class_entity = ClassEntity.new
-      class_entity.register_relationship agg
-      class_entity.register_relationship dep
-      class_entity.register_relationship par
+      class_entity.add_explorer agg
+      class_entity.add_explorer dep
+      class_entity.add_explorer par
 
       return class_entity
     end

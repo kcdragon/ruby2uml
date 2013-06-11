@@ -19,7 +19,7 @@ module Exploration
       type = :class
       context = { name: name, type: :class }
       block.call name, type
-      @rels.each do |rel|
+      @explorers.each do |rel|
         rel.each sexp, context, &block
       end
     end

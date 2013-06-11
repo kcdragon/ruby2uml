@@ -6,13 +6,11 @@ module Exploration
     
     def initialize
       super
-      # REFACTOR change variable name to explorables
-      @rels = Array.new
+      @explorers = Array.new
     end
     
-    # REFACTOR change method name to add_explorable
-    def register_relationship rel
-      @rels << rel
+    def add_explorer exp
+      @explorers << exp
     end
   end
 end
