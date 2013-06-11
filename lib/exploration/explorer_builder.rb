@@ -1,4 +1,6 @@
 require_relative 'class_entity'
+require_relative 'module_entity'
+require_relative 'root_entity'
 require_relative 'aggregation_relation'
 require_relative 'dependency_relation'
 #require_relative 'implements_relation'
@@ -22,7 +24,15 @@ module Exploration
       class_entity.add_explorer dep
       class_entity.add_explorer par
 
-      return class_entity
+      module_entity = ModuleEntity.new
+      module_entity.add_explorer class_entity
+      module_entity.add_explorer dep
+
+      root = RootEntity.new
+      root.add_explorer class_entity
+      root.add_explorer module_entity
+
+      return root
     end
   end
 end

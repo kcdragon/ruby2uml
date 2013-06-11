@@ -9,6 +9,7 @@ module Graph
     def initialize
       @vertices = Hash.new
       @vertices[:class] = lambda { |name| ClassVertex.new name }
+      @vertices[:module] = lambda { |name| ModuleVertex.new name }
     end
 
     def get_vertex name, type

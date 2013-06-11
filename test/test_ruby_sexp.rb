@@ -25,7 +25,7 @@ public
 
   # TODO add checks that Foo and Bar are ClassVertex's
 
-  def test_program_with_inheritance
+  def test_program_with_class_inheritance
     program = "class Foo < Bar ; end"
     graph = analyze_program(program)
 
@@ -33,7 +33,7 @@ public
     assert_edge_type foo, bar, :generalization
   end
 
-  def test_program_with_dependency
+  def test_program_with_class_dependency
     program = "class Foo \n def hello \n return Bar.new \n end \n end"
     graph = analyze_program(program)
 
@@ -41,7 +41,7 @@ public
     assert_edge_type foo, bar, :dependency
   end
 
-  def test_program_with_instance_variable_aggregation_one_to_one
+  def test_program_with_class_instance_variable_aggregation_one_to_one
     program = <<-EOS
       class Foo
         def initialize
@@ -56,7 +56,7 @@ public
   end
 
 
-#  def test_program_with_instance_variable_aggregation_one_to_many
+#  def test_program_with_class_instance_variable_aggregation_one_to_many
 #    program = <<-EOS
 #      class Foo
 #        def initialize
@@ -88,6 +88,50 @@ public
     assert_edge_type foo, bar, :aggregation
   end
 
+  def test_program_with_class_inside_module
+    program = <<-EOS
+      module Foo
+        class Bar
+        end
+      end
+    EOS
+    graph = analyze_program(program)
+
+    assert_vertices graph, 'Foo::Bar'
+  end
+
+  def test_program_with_module_dependency
+    program = <<-EOS
+      module Foo
+        def hello
+          return Bar.new
+        end
+      end
+    EOS
+    graph = analyze_program program
+    
+    foo, bar = assert_and_get_vertices graph, 'Foo', 'Bar'
+    assert_edge_type foo, bar, :dependency
+  end
+
+  # test that the class has a dependency but the module does not
+#  def test_program_with_module_class_and_class_dependency
+#    program = <<-EOS
+#      module Foo
+#        class Bar
+#          def hello
+#            return World.new
+#          end
+#        end
+#      end
+#    EOS
+#    graph = analyze_program program
+    
+#    foo, bar, world = assert_and_get_vertices graph, 'Foo', 'Bar', 'World'
+#    assert_edge_type bar, world, :dependency
+#    assert_no_edge_type foo, world, :dependency
+#  end
+
   def test_program_with_multiple_classes
     assert true
     # TODO implement test program with multiple classes
@@ -102,9 +146,7 @@ private
   # precondition: vertices is non-empty
   # postcondition: returns n vertex objects s.t. n is vertices.length
   def assert_and_get_vertices graph, *vertices
-    vertices.each do |v|
-      assert graph.has_vertex?(v), "graph must contain vertex #{v}"
-    end
+    assert_vertices graph, *vertices
     
     vars = Array.new
     vertices.each do |v|
@@ -113,8 +155,19 @@ private
     return vars
   end
 
+  def assert_vertices graph, *vertices
+    vertices.each do |v|
+      assert graph.has_vertex?(v), "graph must contain vertex #{v}"
+    end
+  end
+
   def assert_edge_type from, to, type
     e = @edge_factory.get_edge(type)
     assert from.get_edge(e).include?(to), "#{from.name} #{e.to_s} #{to.name} must be true"
+  end
+
+  def assert_no_edge_type from, to, type
+    e = @edge_factory.get_edge(type)
+    assert !from.get_edge(e).include?(to), "#{from.name} #{e.to_s} #{to.name} must not exist"
   end
 end

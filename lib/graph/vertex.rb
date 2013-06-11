@@ -40,4 +40,18 @@ module Graph
       return string
     end
   end
+
+  class ModuleVertex < Vertex
+    def to_s
+      string = "module: #{@name}\n"
+      @edges.each do |edge, set|
+        string << "\t#{edge.to_s}: "
+        set.each do |v|
+          string << "#{v.name.to_s},"
+        end
+        string << "\n"
+      end
+      return string
+    end
+  end
 end
