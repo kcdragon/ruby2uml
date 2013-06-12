@@ -137,6 +137,11 @@ public
     # TODO implement test program with multiple classes
   end
 
+  def test_program_with_module_hierarchy_and_class
+    assert true
+    # TODO implement test program with module hierachy and class
+  end
+
   def test_program_with_include_module
     assert true
     # TODO implement test program with include

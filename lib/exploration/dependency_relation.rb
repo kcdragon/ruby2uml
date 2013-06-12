@@ -4,6 +4,7 @@ module Exploration
   class DependencyRelation < Relation
     def each sexp, context=nil, &block
       # REFACTOR extract this to superclass method
+      # FIXME each_of_type is recurisively searching sexp and I need it to only go to one level
       sexp.each_of_type(:call) do |call_node|
         call_node.rest.each_of_type(:const) do |dependency_node|
           dependency_name = dependency_node.rest.head.to_s
