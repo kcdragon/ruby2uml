@@ -115,28 +115,29 @@ public
   end
 
   # test that the class has a dependency but the module does not
-#  def test_program_with_module_class_and_class_dependency
-#    program = <<-EOS
-#      module Foo
-#        class Bar
-#          def hello
-#            return World.new
-#          end
-#        end
-#      end
-#    EOS
-#    graph = analyze_program program
+  def test_program_with_module_class_and_class_dependency
+    program = <<-EOS
+      module Foo
+        class Bar
+          def hello
+            return World.new
+          end
+        end
+      end
+    EOS
+    graph = analyze_program program
     
-#    foo, bar, world = assert_and_get_vertices graph, 'Foo', 'Bar', 'World'
-#    assert_edge_type bar, world, :dependency
-#    assert_no_edge_type foo, world, :dependency
-#  end
+    foo, bar, world = assert_and_get_vertices graph, 'Foo', 'Bar', 'World'
+    assert_edge_type bar, world, :dependency
+    assert_no_edge_type foo, world, :dependency
+  end
 
   def test_program_with_multiple_classes
     assert true
     # TODO implement test program with multiple classes
   end
 
+  # FIXME currently classes are hit twice, once with the class explorer and once with the class explorer nested in the module explorer
   def test_program_with_module_hierarchy_and_class
     assert true
     # TODO implement test program with module hierachy and class

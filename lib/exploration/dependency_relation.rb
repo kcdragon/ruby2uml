@@ -3,19 +3,16 @@ require_relative 'relation'
 module Exploration
   class DependencyRelation < Relation
     def each sexp, context=nil, &block
-      # REFACTOR extract this to superclass method
-      # FIXME each_of_type is recurisively searching sexp and I need it to only go to one level
-      sexp.each_of_type(:call) do |call_node|
-        call_node.rest.each_of_type(:const) do |dependency_node|
-          dependency_name = dependency_node.rest.head.to_s
-          yield_wrapper = lambda { return context[:name], context[:type], :dependency, dependency_name, :class }
-          if block_given?
-            block.call yield_wrapper.call
-          else
-            yield yield_wrapper.call
+      callbacks = {
+        [:call] => lambda do |sexp|
+          sexp.rest.each_of_type(:const) do |dependency_node|
+            dependency_name = dependency_node.rest.head.to_s
+            block.call context[:name], context[:type], :dependency, dependency_name, :class
           end
         end
-      end
+      }
+      each_of_type :defn, sexp, context, callbacks, &block # defn is instance method
+      each_of_type :defs, sexp, context, callbacks, &block # defs is class method
     end
   end
 end
