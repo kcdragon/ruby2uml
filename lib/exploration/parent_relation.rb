@@ -2,6 +2,8 @@ require_relative 'relation'
 
 module Exploration
   class ParentRelation < Relation
+    
+    # Yields the parent of the sexp
     def each sexp, context=nil, &block
       parent = nil
       parent_node = sexp.rest.rest.head

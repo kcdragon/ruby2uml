@@ -10,6 +10,8 @@ module Graph
     end
   end
 
+  # REFACTOR consider using strategy/state instead of subclassing edge
+
   class AggregationEdge < Edge
     def to_s
       'aggregates'
