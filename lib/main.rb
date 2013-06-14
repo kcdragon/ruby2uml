@@ -7,6 +7,7 @@ require_relative 'exploration/aggregation_relation'
 require_relative 'exploration/dependency_relation'
 #require_relative 'exploration/implements_relation'
 require_relative 'exploration/parent_relation'
+require_relative 'graph_generator'
 require_relative 'sexp_factory'
 
 # REFACTOR into command line arguments
@@ -15,6 +16,9 @@ file = File.open FILE_NAME, 'rb' # open file as binary to read into one string
 program = file.read
 
 sexp = SexpFactory.instance.get_sexp program, 'rb'
-graph = Exploration::ExplorerBuilder.instance.build_ruby_explorer.generate_graph sexp
+explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
+generator = GraphGenerator.new
+generator.process_sexp explorer, sexp
+graph = generator.graph
 
 puts graph

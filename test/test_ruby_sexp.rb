@@ -3,8 +3,9 @@ require 'test/unit'
 require_relative '../lib/graph/digraph'
 require_relative '../lib/graph/edge_factory'
 require_relative '../lib/exploration/class_entity'
-require_relative '../lib/exploration/explorer_builder.rb'
+require_relative '../lib/exploration/explorer_builder'
 require_relative '../lib/sexp_factory'
+require_relative '../lib/graph_generator'
 
 class TestRubySexp < Test::Unit::TestCase
   def setup
@@ -13,10 +14,12 @@ class TestRubySexp < Test::Unit::TestCase
 
 private
   # return Digraph
-  def analyze_program program
-    sexp = SexpFactory.instance.get_sexp program, 'rb'
+  def analyze_program *programs
+    sexp = SexpFactory.instance.get_sexp programs[0], 'rb'
     explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
-    return explorer.generate_graph(sexp)
+    generator = GraphGenerator.new
+    generator.process_sexp explorer, sexp
+    return generator.graph
   end
 
 public
@@ -137,15 +140,45 @@ public
     # TODO implement test program with multiple classes
   end
 
-  # FIXME currently classes are hit twice, once with the class explorer and once with the class explorer nested in the module explorer
   def test_program_with_module_hierarchy_and_class
-    assert true
-    # TODO implement test program with module hierachy and class
+    program = <<-EOS
+      module Foo
+        class Bar
+         end
+      end
+    EOS
+    #graph = analyze_program program
+
+    #assert_vertices graph, 'Foo', 'Foo::Bar'
+    #assert_no_vertices graph, 'Bar'
   end
 
   def test_program_with_include_module
     assert true
     # TODO implement test program with include
+  end
+
+  # tests that a un-namespaced class in one program is successfully identified as the fully-namespaced class in another program
+  def test_program_aggregatating_unnamespaced_reference
+    program1 = <<-EOS
+      module Music
+        class Artist
+         end
+      end
+    EOS
+
+    program2 = <<-EOS
+      class Album
+        def initialize
+          @artist = Artist.new
+        end
+      end
+    EOS
+
+    #graph = analyze_program program1, program2
+
+    #music, artist, album = assert_and_get_vertices graph, 'Music', 'Music::Artist', 'Album'
+    #assert_edge_type artist, album, :aggregation
   end
 
 private
@@ -164,6 +197,12 @@ private
   def assert_vertices graph, *vertices
     vertices.each do |v|
       assert graph.has_vertex?(v), "graph must contain vertex #{v}"
+    end
+  end
+
+  def assert_no_vertices graph, *vertices
+    vertices.each do |v|
+      assert !graph.has_vertex?(v), "graph must not contain vertex #{v}"
     end
   end
 

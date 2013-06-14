@@ -1,5 +1,6 @@
 module Exploration
-  class Relation
+  class Relation < Explorable
+
     # types_to_search: Hash of types => callback
     def each_of_type type, sexp, context, types_to_search, &block
       sexp.each_sexp do |sub_sexp|

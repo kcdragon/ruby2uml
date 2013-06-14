@@ -4,10 +4,14 @@ module Graph
   class Vertex
     include Enumerable
 
-    attr_reader :name
+    attr_accessor :name,      # name of entity ex. 'Artist'
+                  :namespace, # namespace the entity belongs to ex. ['Performer', 'Musician']
+                  :paths      # path(s) the entity is declared ex. ['foo/bar/artist.rb']
     
     def initialize name
       @name = name
+      @namespace = Array.new
+      @paths = Array.new
       @edges = Hash.new
     end
 
@@ -27,7 +31,10 @@ module Graph
     end
   end
 
+  # REFACTOR consider using strategy/state instead of subclassing vertex
+
   class ClassVertex < Vertex
+    # REFACTOR extract to superclass
     def to_s
       string = "class: #{@name}\n"
       @edges.each do |edge, set|
@@ -42,6 +49,7 @@ module Graph
   end
 
   class ModuleVertex < Vertex
+    # REFACTOR extract to superclass
     def to_s
       string = "module: #{@name}\n"
       @edges.each do |edge, set|

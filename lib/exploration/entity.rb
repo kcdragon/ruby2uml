@@ -1,11 +1,9 @@
 require_relative 'explorable'
 
 module Exploration
-  class Entity
-    include Explorable
+  class Entity < Explorable
     
     def initialize
-      super
       @explorers = Array.new
     end
     
