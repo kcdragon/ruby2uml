@@ -1,3 +1,4 @@
+require 'rdoc/task'
 require 'rake/testtask'
 require 'rspec/core/rake_task'
 
@@ -11,3 +12,8 @@ end
 
 task :default => :spec
 task :default => :test
+
+Rake::RDocTask.new do |rd|
+  rd.main = "README"
+  rd.rdoc_files.include("README", "lib/**/*.rb")
+end
