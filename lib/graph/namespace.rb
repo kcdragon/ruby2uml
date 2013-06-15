@@ -36,5 +36,10 @@ module Graph
     def each &block
       @array.each &block
     end
+
+    def to_s
+      # TODO change delimiter based on language or find a language independent delimiter
+      @array.join '::'
+    end
   end
 end
