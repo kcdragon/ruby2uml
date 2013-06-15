@@ -9,11 +9,12 @@ describe Graph::Vertex do
   subject { @vertex }
 
   it { should respond_to :name }
+  it { should respond_to :namespace }
   it { should respond_to :add_edge }
   it { should respond_to :get_edge }
   it { should respond_to :[] }
 
-  it "should add aggregation edge" do
+  it "add aggregation edge" do
     another_vertex = Graph::Vertex.new 'bar'
     edge = @ef.get_edge :aggregation
     lambda {
@@ -21,7 +22,7 @@ describe Graph::Vertex do
     }.should change(subject[@ef.get_edge :aggregation], :count).by(1)
   end
 
-  it "should enumerate edges" do
+  it "enumerate edges" do
     @one = Graph::ClassVertex.new 'one'
     @two = Graph::ClassVertex.new 'two'
     @three = Graph::ClassVertex.new 'three'

@@ -1,5 +1,7 @@
 require 'set'
 
+require_relative 'namespace'
+
 module Graph
   class Vertex
     include Enumerable
@@ -10,7 +12,7 @@ module Graph
     
     def initialize name
       @name = name
-      @namespace = Array.new
+      @namespace = Namespace.new []
       @paths = Array.new
       @edges = Hash.new
     end
