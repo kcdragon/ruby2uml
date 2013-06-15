@@ -31,14 +31,10 @@ module Graph
     def each &block
       @edges.each &block
     end
-  end
 
-  # REFACTOR consider using strategy/state instead of subclassing vertex
-
-  class ClassVertex < Vertex
-    # REFACTOR extract to superclass
     def to_s
-      string = "class: #{@name}\n"
+      string = "#{type}: #{@name}\n"
+      string << "\tnamespace: #{namespace}"
       @edges.each do |edge, set|
         string << "\t#{edge.to_s}: "
         set.each do |v|
@@ -50,18 +46,17 @@ module Graph
     end
   end
 
+  # REFACTOR consider using strategy/state instead of subclassing vertex
+
+  class ClassVertex < Vertex
+    def type
+      'class'
+    end
+  end
+
   class ModuleVertex < Vertex
-    # REFACTOR extract to superclass
-    def to_s
-      string = "module: #{@name}\n"
-      @edges.each do |edge, set|
-        string << "\t#{edge.to_s}: "
-        set.each do |v|
-          string << "#{v.name.to_s},"
-        end
-        string << "\n"
-      end
-      return string
+    def type
+      'module'
     end
   end
 end
