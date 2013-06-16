@@ -11,7 +11,10 @@ module Exploration
           rhs = sexp.rest.rest # right-hand-side of assignment
           rhs.each_of_type(:const) do |node|
             name = node.rest.head.to_s # name of the aggregated class
-            block.call context[:name], context[:type], :aggregation, name, :class
+            #block.call context[:name], context[:type], :aggregation, name, :class
+            # REFACTOR pull up
+            # TODO extract namespace
+            block.call context, :aggregation, { name: name, type: :class }
           end
         end
       }
