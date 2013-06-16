@@ -9,11 +9,16 @@ module Exploration
       parent_node = sexp.rest.rest.head
       if parent_node != nil # class has a parent
         parent = parent_node.rest.head.to_s
-        yield_wrapper = lambda { return context[:name], context[:type], :generalization, parent, :class }
+        #yield_wrapper = lambda { return context[:name], context[:type], :generalization, parent, :class }
+        # TODO get namespace
+        # REFACTOR pull up
+        yield_wrapper = lambda { return context, :generalization, { name: parent, type: :class } }
         if block_given?
-          block.call yield_wrapper.call
+          #block.call yield_wrapper.call
+          block.call context, :generalization, { name: parent, type: :class }
         else
-          yield yield_wrapper.call
+          #yield yield_wrapper.call
+          yield context, :generalization, { name: parent, type: :class }
         end
       end
     end
