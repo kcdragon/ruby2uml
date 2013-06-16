@@ -5,11 +5,18 @@ module Exploration
   # Yields dependency relationships in +sexp+
   class DependencyRelation < Relation
     def each sexp, context=nil, &block
+      yielded = []
       callbacks = {
         [:call] => lambda do |sexp| # search for call statements
           sexp.rest.each_of_type(:const) do |dependency_node|
-            dependency_name = dependency_node.rest.head.to_s # name of the dependenct class
-            block.call context[:name], context[:type], :dependency, dependency_name, :class
+            if !yielded.include?(dependency_node) # HACK currently, don't want dependencies being yielded twice
+              dependency_name = dependency_node.rest.head.to_s # name of the dependenct class
+              #block.call context[:name], context[:type], :dependency, dependency_name, :class
+              # REFACTOR pull up
+              # TODO get namespace
+              block.call context, :dependency, { name: dependency_name, type: :class }
+              yielded << dependency_node
+            end
           end
         end
       }
