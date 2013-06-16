@@ -15,6 +15,7 @@ class TestRubySexp < Test::Unit::TestCase
 private
   # return Digraph
   def analyze_program *programs
+    # FIXME
     sexp = SexpFactory.instance.get_sexp programs[0], 'rb'
     explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
     generator = GraphGenerator.new
@@ -98,9 +99,9 @@ public
         end
       end
     EOS
-    graph = analyze_program(program)
 
-    assert_vertices graph, 'Foo::Bar'
+    graph = analyze_program(program)
+    assert !graph.find_vertex('Bar', Graph::Namespace.new(['Foo'])).empty?
   end
 
   def test_program_with_module_dependency

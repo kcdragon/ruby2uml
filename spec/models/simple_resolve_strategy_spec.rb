@@ -3,14 +3,43 @@ require_relative '../../lib/graph/digraph'
 
 describe Exploration::SimpleResolveStrategy do
   before :each do
-    @graph = Graph::Digraph.new
+    @vertex = Graph::ClassVertex.new 'Foo'
+    @vertex.namespace = Graph::Namespace.new ['M']
     @ef = Graph::EdgeFactory.instance
   end
-  subject { @graph }
   
-  it { respond_to :resolve }
+  it { respond_to :is_same? }
+  it { respond_to :merge_vertices }
 
-  it "should resolve a name with and without a module" do
-    
+  context "is the same as other vertex" do
+    it "includes other vertex" do
+      other = Graph::ClassVertex.new 'Foo'
+      other.namespace = Graph::Namespace.new []
+
+      expect(subject.is_same?(@vertex, other)).to be_true
+    end
+
+    it "included by other vertex" do
+      other = Graph::ClassVertex.new 'Foo'
+      other.namespace = Graph::Namespace.new ['L', 'M']
+
+      expect(subject.is_same?(@vertex, other)).to be_true
+    end
+
+    it "same module as other vertex" do
+      other = Graph::ClassVertex.new 'Foo'
+      other.namespace = Graph::Namespace.new ['M']
+
+      expect(subject.is_same?(@vertex, other)).to be_true
+    end
+  end
+
+  context "is not the same as other vertex" do
+    it "has same number of modules but are different" do
+      other = Graph::ClassVertex.new 'Foo'
+      other.namespace = Graph::Namespace.new ['N']
+
+      expect(subject.is_same?(@vertex, other)).to be_false
+    end
   end
 end

@@ -1,3 +1,5 @@
+require_relative 'explorable'
+
 module Exploration
   class Relation < Explorable
 

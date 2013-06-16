@@ -3,32 +3,41 @@ module Graph
     include Enumerable
 
     def initialize
-      @vertices = Hash.new
+      @vertices = Array.new
     end
 
     def get_vertex vertex_name
-      @vertices[vertex_name]
+      @vertices.select { |v| v.name == vertex_name }.first
+    end
+
+    # Returns an Array of Vertices that match the name, namespace and path.
+    def find_vertex name, namespace=nil, path=nil # REFACTOR consider changing this to a Vertex object
+      @vertices.select do |v|
+        v.name == name &&
+          (namespace.nil? || v.namespace.eql?(namespace)) &&
+          (path.nil? || v.paths.include?(path))
+      end
     end
 
     def has_vertex? vertex_name
-      @vertices.has_key? vertex_name
+      !@vertices.select { |v| v.name == vertex_name }.empty?
     end
 
     def add_vertex vertex
-      @vertices[vertex.name] = vertex
+      @vertices.push vertex
       vertex
+    end
+
+    def remove_vertex vertex
+      @vertices.delete vertex
     end
 
     def each &block
       @vertices.each &block
     end
 
-    def each_vertex &block
-      @vertices.each_value &block
-    end
-
     def to_s
-      @vertices.values.map(&:to_s).join("\n")
+      @vertices.map(&:to_s).join("\n")
     end
   end
 end
