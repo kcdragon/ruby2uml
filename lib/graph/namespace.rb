@@ -35,6 +35,7 @@ module Graph
     def eql? other
       @array.eql?(other.to_a) && self.class.eql?(other.class)
     end
+    alias_method :==, :eql?
 
     def hash
       @array.hash

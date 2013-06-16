@@ -11,7 +11,6 @@ module Exploration
           sexp.rest.each_of_type(:const) do |dependency_node|
             if !yielded.include?(dependency_node) # HACK currently, don't want dependencies being yielded twice
               dependency_name = dependency_node.rest.head.to_s # name of the dependenct class
-              #block.call context[:name], context[:type], :dependency, dependency_name, :class
               # REFACTOR pull up
               # TODO get namespace
               block.call context, :dependency, { name: dependency_name, type: :class }

@@ -5,7 +5,7 @@ module Exploration
 
     # types_to_search: Hash of types => callback
     def each_of_type type, sexp, context, types_to_search, &block
-      sexp.each_sexp do |sub_sexp|
+      sexp.each_child do |sub_sexp|
         if sub_sexp.first == type
           method_node = sub_sexp
           method_body = method_node.rest.rest.rest

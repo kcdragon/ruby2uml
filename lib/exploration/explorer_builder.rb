@@ -32,6 +32,7 @@ module Exploration
       class_entity.add_explorer dep
       class_entity.add_explorer par
       module_entity = ModuleEntity.new
+      module_entity.add_explorer module_entity
       module_entity.add_explorer class_entity
       module_entity.add_explorer dep
 

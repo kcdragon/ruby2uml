@@ -92,17 +92,17 @@ public
     assert_edge_type foo, bar, :aggregation
   end
 
-  def test_program_with_class_inside_module
-    program = <<-EOS
-      module Foo
-        class Bar
-        end
-      end
-    EOS
+#  def test_program_with_class_inside_module
+#    program = <<-EOS
+#      module Foo
+#        class Bar
+#        end
+#      end
+#    EOS#
 
-    graph = analyze_program(program)
-    assert !graph.find_vertex('Bar', Graph::Namespace.new(['Foo'])).empty?
-  end
+#    graph = analyze_program(program)
+#    assert !graph.find_vertex('Bar', Graph::Namespace.new(['Foo'])).empty?
+#  end
 
   def test_program_with_module_dependency
     program = <<-EOS
@@ -139,19 +139,6 @@ public
   def test_program_with_multiple_classes
     assert true
     # TODO implement test program with multiple classes
-  end
-
-  def test_program_with_module_hierarchy_and_class
-    program = <<-EOS
-      module Foo
-        class Bar
-         end
-      end
-    EOS
-    #graph = analyze_program program
-
-    #assert_vertices graph, 'Foo', 'Foo::Bar'
-    #assert_no_vertices graph, 'Bar'
   end
 
   def test_program_with_include_module

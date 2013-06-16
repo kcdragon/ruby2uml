@@ -1,3 +1,4 @@
+require_relative '../sexp_ext'
 require_relative 'explorable'
 
 module Exploration
@@ -16,13 +17,23 @@ module Exploration
 
     # Explore each Sexp with type +type+ (ex. :class, :module).
     def each_type sexp, type, context=nil, &block
-      if sexp.first == type # if top-level sexp matches type, then just explore that
-        yield_entity sexp, context, type, &block
-      else
-        sexp.each_sexp do |sub_sexp|
+      if context != nil
+        sexp.each_child do |sub_sexp|
           if sub_sexp.head == type
             entity_node = sub_sexp
             yield_entity entity_node, context, type, &block
+          end
+        end
+      end
+      if context == nil
+        if sexp.first == type # if top-level sexp matches type, then just explore that
+          yield_entity sexp, context, type, &block
+        else
+          sexp.each_child do |sub_sexp|
+            if sub_sexp.head == type
+              entity_node = sub_sexp
+              yield_entity entity_node, context, type, &block
+            end
           end
         end
       end

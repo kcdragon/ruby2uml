@@ -32,17 +32,31 @@ module Graph
       @edges.each &block
     end
 
+    def eql? obj
+      self.class.eql?(obj.class) &&
+        self.name.eql?(obj.name) &&
+        self.namespace.eql?(obj.namespace) &&
+        self.each.to_a.eql?(obj.each.to_a) &&
+        self.paths.eql?(obj.paths)
+    end
+    alias_method :==, :eql?
+
+    def hash
+      @name.hash
+    end
+
     def to_s
-      string = "#{type}: #{@name}\n"
-      string << "\tnamespace: #{namespace}"
+      string = ''
+      string = "#{@namespace}::" if @namespace.to_s != ''
+      string += "#{@name}~#{type}\n"
       @edges.each do |edge, set|
-        string << "\t#{edge.to_s}: "
+        string << "\t#{edge.to_s}: [ "
         set.each do |v|
           string << "#{v.name.to_s},"
         end
-        string << "\n"
+        string << "]\n"
       end
-      return string
+      return string.chomp
     end
   end
 
