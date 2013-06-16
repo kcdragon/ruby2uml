@@ -1,4 +1,4 @@
-class Sexp
+class Sexp < Array
   def each_child &block
     # REFACTOR i don't like this switch statement
     type = self.head
