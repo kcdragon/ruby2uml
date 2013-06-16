@@ -53,4 +53,24 @@ describe GraphGenerator do
     expect(graph.each.to_a).to match_array [foo, bar, hello]
   end
 
+  it "generates a graph with multiple classes"
+  it "generates a graph for multiple programs w/ and w/o namespaces" do
+    program1 = <<-EOS
+      module Music
+        class Artist
+         end
+      end
+    EOS
+
+    program2 = <<-EOS
+      class Album
+        def initialize
+          @artist = Artist.new
+        end
+      end
+    EOS
+  end
+  it "generates a graph with including a module"
+  it "generates a graph with instance variables one to many"
+
 end
