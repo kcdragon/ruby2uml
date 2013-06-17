@@ -12,7 +12,7 @@ module Exploration
           rhs.each_of_type(:const) do |node|
             name = node.rest.head.to_s # name of the aggregated class
             # REFACTOR pull up
-            # TODO extract namespace
+            # TODO get namespace (if present)
             block.call context, :aggregation, { name: name, type: :class }
           end
         end

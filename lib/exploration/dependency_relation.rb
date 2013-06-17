@@ -12,7 +12,7 @@ module Exploration
             if !yielded.include?(dependency_node) # HACK currently, don't want dependencies being yielded twice
               dependency_name = dependency_node.rest.head.to_s # name of the dependenct class
               # REFACTOR pull up
-              # TODO get namespace
+              # TODO get namespace (if present)
               block.call context, :dependency, { name: dependency_name, type: :class }
               yielded << dependency_node
             end

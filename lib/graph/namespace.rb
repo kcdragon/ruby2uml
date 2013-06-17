@@ -1,13 +1,11 @@
 module Graph
+  
+  # Instances of Namespace are immutable.
   class Namespace
     include Enumerable
 
     def initialize array
-      if array.is_a? Array
-        @array = array.dup
-      else
-        @array = Array.new
-      end
+      @array = array || Array.new # do not want a nil array for namespace, better to have an empty array
     end
 
     # Checks if the Namespace could be included by the other Namespace.
@@ -26,10 +24,6 @@ module Graph
       return false if other.count > self.count
       return true if self.eql? other
       return self.drop(self.count - other.count).to_a.eql? other.to_a
-    end
-
-    def size
-      @array.count
     end
 
     def eql? other

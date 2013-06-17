@@ -1,4 +1,5 @@
 module Exploration
+
   # Contract: All classes that inherit Explorable must implement each(sexp, context=nil, &block) which yields entities (classes, modules, etc.) and their relationships among each other.
   #
   # == Explorable#each

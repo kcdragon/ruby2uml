@@ -14,7 +14,7 @@ module Exploration
       merged = vertices[0].dup
       (1...vertices.length).each do |i|
         v = vertices[i]
-        merged.namespace = v.namespace if v.namespace.size > merged.namespace.size
+        merged.namespace = v.namespace if v.namespace.count > merged.namespace.count
         merged.paths.concat v.paths
 
         v.each do |edge, set|

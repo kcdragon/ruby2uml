@@ -15,25 +15,18 @@ module Exploration
 
   protected
 
+    # REFACTOR context should be its own class instead of a hash
+
     # Explore each Sexp with type +type+ (ex. :class, :module).
     def each_type sexp, type, context=nil, &block
-      if context != nil
+      # TODO this is still a little awkward, need to take a closer look later
+      if context == nil && sexp.first == type # if there is no context (parent sexp) and top-level sexp matches type, then just explore that
+        yield_entity sexp, context, type, &block
+      else
         sexp.each_child do |sub_sexp|
           if sub_sexp.head == type
             entity_node = sub_sexp
             yield_entity entity_node, context, type, &block
-          end
-        end
-      end
-      if context == nil
-        if sexp.first == type # if top-level sexp matches type, then just explore that
-          yield_entity sexp, context, type, &block
-        else
-          sexp.each_child do |sub_sexp|
-            if sub_sexp.head == type
-              entity_node = sub_sexp
-              yield_entity entity_node, context, type, &block
-            end
           end
         end
       end
@@ -43,18 +36,8 @@ module Exploration
 
     # Yields an individual Sexp and all of its Relations.
     def yield_entity sexp, context, type, &block
-      name = get_entity_name(sexp)
-      namespace = Array.new
-
-      # TODO change this awkward logic
-      if context != nil
-        if context.has_key? :namespace
-          namespace = context[:namespace].dup
-          namespace << context[:name] if context.has_key? :name
-        else
-          namespace << context[:name] if context.has_key? :name
-        end
-      end
+      name = get_entity_name sexp
+      namespace = get_namespace context
       new_context = { name: name, namespace: namespace, type: type }
       block.call new_context
       @explorers.each do |rel|
@@ -64,6 +47,15 @@ module Exploration
 
     def get_entity_name sexp
       sexp.rest.head.to_s
+    end
+
+    def get_namespace context
+      namespace = Array.new
+      if context != nil
+        namespace = context[:namespace].dup if context.has_key? :namespace
+        namespace.push context[:name] if context.has_key? :name
+      end
+      namespace
     end
   end
 end
