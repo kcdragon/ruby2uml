@@ -1,9 +1,9 @@
 require_relative 'relation'
 
 module Exploration
-
-  # Yields dependency relationships in +sexp+
   class DependencyRelation < Relation
+
+    # Yields dependency relationships in +sexp+
     def each sexp, context=nil, &block
       yielded = []
       callbacks = {

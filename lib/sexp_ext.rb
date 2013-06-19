@@ -1,4 +1,6 @@
 class Sexp < Array
+
+  # Yields each child of self to the given block. A child is any Sexp that is an immediate descendant of self.
   def each_child &block
     # REFACTOR i don't like this switch statement
     type = self.head

@@ -14,6 +14,10 @@ class GraphGenerator
     @resolve_strategy = Exploration::SimpleResolveStrategy.new
   end
 
+  # Traverse +sexp+ using the given +explorer+ and store the extracted relationships in the +graph+.
+  #
+  # [params] - explorer is an Explorable used for the traversal
+  #          - sexp is a Sexp that is the subject of the traversal
   def process_sexp explorer, sexp
     explorer.each(sexp) do |entity, relation, other_entity|
       vertex = get_or_create_vertex @graph, entity[:name], entity[:namespace], entity[:type]
@@ -26,7 +30,7 @@ class GraphGenerator
   end
   
 private
-  # TODO clean this method up
+
   def get_or_create_vertex graph, name, namespace, type
     vertex = nil
     if graph.has_vertex? name

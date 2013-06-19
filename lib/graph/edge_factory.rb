@@ -15,6 +15,14 @@ module Graph
       @edge_map[:dependency] = DependencyEdge.new
     end
 
+    # Returns an instance of Edge that corresponds to edge_type.
+    #
+    # Valid values for +edge_type+ are
+    # * :aggregation
+    # * :composition
+    # * :implements
+    # * :generalization
+    # * :dependency
     def get_edge edge_type
       raise "#{edge_type} of type #{edge_type.class} is not a valid edge type" if not @edge_map.include? edge_type
       @edge_map[edge_type]

@@ -3,7 +3,7 @@ require_relative 'relation'
 module Exploration
   class ParentRelation < Relation
     
-    # Yields the parent of the sexp
+    # Yields the parent of the +sexp+.
     def each sexp, context=nil, &block
       parent_node = sexp.rest.rest.head
       if parent_node != nil # class has a parent
