@@ -1,10 +1,8 @@
-require_relative '../../lib/graph/edge_factory'
 require_relative '../../lib/graph/vertex'
 
 describe Graph::Vertex do
   before :each do
     @vertex = Graph::Vertex.new 'foo'
-    @ef = Graph::EdgeFactory.instance
   end
   subject { @vertex }
 
@@ -16,26 +14,26 @@ describe Graph::Vertex do
 
   it "add aggregation edge" do
     another_vertex = Graph::Vertex.new 'bar'
-    edge = @ef.get_edge :aggregation
+    edge = Graph::Edge.new :aggregation
     lambda {
       subject.add_edge edge, another_vertex
-    }.should change(subject[@ef.get_edge :aggregation], :count).by(1)
+    }.should change(subject[Graph::Edge.new(:aggregation)], :count).by(1)
   end
 
   it "enumerate edges" do
-    @one = Graph::ClassVertex.new 'one'
-    @two = Graph::ClassVertex.new 'two'
-    @three = Graph::ClassVertex.new 'three'
-    @vertex.add_edge @ef.get_edge(:generalization), @one
-    @vertex.add_edge @ef.get_edge(:aggregation), @two
-    @vertex.add_edge @ef.get_edge(:aggregation), @three
+    @one = Graph::Vertex.new 'one', :class
+    @two = Graph::Vertex.new 'two', :class
+    @three = Graph::Vertex.new 'three', :class
+    @vertex.add_edge Graph::Edge.new(:generalization), @one
+    @vertex.add_edge Graph::Edge.new(:aggregation), @two
+    @vertex.add_edge Graph::Edge.new(:aggregation), @three
     
     actual_gen = Array.new
     actual_agg = Array.new
     @vertex.each do |edge, set|
-      if edge.eql? @ef.get_edge(:generalization)
+      if edge.eql? Graph::Edge.new(:generalization)
         actual_gen.concat set.to_a
-      elsif edge.eql? @ef.get_edge(:aggregation)
+      elsif edge.eql? Graph::Edge.new(:aggregation)
         actual_agg.concat set.to_a
       end
     end

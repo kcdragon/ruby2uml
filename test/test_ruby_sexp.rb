@@ -1,27 +1,17 @@
 require 'test/unit'
 
 require_relative '../lib/graph/digraph'
-require_relative '../lib/graph/edge_factory'
+require_relative '../lib/graph/edge'
 require_relative '../lib/exploration/class_entity'
 require_relative '../lib/exploration/explorer_builder'
 require_relative '../lib/sexp_factory'
 require_relative '../lib/graph_generator'
 
 class TestRubySexp < Test::Unit::TestCase
-  def setup
-    @edge_factory = Graph::EdgeFactory.instance
-  end
 
 private
 
-  # return Digraph
-  def analyze_program program
-    sexp = SexpFactory.instance.get_sexp program, 'rb'
-    explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
-    generator = GraphGenerator.new
-    generator.process_sexp explorer, sexp
-    return generator.graph
-  end
+  
 
 public
 
@@ -102,6 +92,16 @@ public
   end
 
 private
+
+  # return Digraph
+  def analyze_program program
+    sexp = SexpFactory.instance.get_sexp program, 'rb'
+    explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
+    generator = GraphGenerator.new
+    generator.process_sexp explorer, sexp
+    return generator.graph
+  end
+
   # precondition: vertices is non-empty
   # postcondition: returns n vertex objects s.t. n is vertices.length
   def assert_and_get_vertices graph, *vertices
@@ -127,12 +127,12 @@ private
   end
 
   def assert_edge_type from, to, type
-    e = @edge_factory.get_edge(type)
+    e = Graph::Edge.new type
     assert from.get_edge(e).include?(to), "#{from.name} #{e.to_s} #{to.name} must be true"
   end
 
   def assert_no_edge_type from, to, type
-    e = @edge_factory.get_edge(type)
+    e = Graph::Edge.new type
     assert !from.get_edge(e).include?(to), "#{from.name} #{e.to_s} #{to.name} must not exist"
   end
 end

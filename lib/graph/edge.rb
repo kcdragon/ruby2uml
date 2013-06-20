@@ -1,44 +1,21 @@
 module Graph
   class Edge
+    attr_accessor :type
+
+    def initialize type
+      @type = type
+    end
+
     def eql? object
-      object.kind_of?(self.class)
+      object.kind_of?(self.class) && self.type.eql?(object.type)
     end
     
-    # REFACTOR move hash method to subclasses and have a different hash value for each subclass
     def hash
-      1
+      @type.hash
     end
-  end
 
-  # REFACTOR consider using strategy/state instead of subclassing edge
-
-  class AggregationEdge < Edge
     def to_s
-      'aggregates'
-    end
-  end
-
-  class CompositionEdge < Edge
-    def to_s
-      'composes'
-    end
-  end
-
-  class ImplementsEdge < Edge
-    def to_s
-      'implements'
-    end
-  end
-
-  class GeneralizationEdge < Edge
-    def to_s
-      'generalizes'
-    end
-  end
-
-  class DependencyEdge < Edge
-    def to_s
-      'depends on'
+      @type
     end
   end
 end

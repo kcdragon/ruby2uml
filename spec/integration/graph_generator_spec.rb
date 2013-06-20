@@ -26,8 +26,10 @@ describe GraphGenerator do
 
     graph = generate_graph program
 
-    foo = Graph::ModuleVertex.new 'Foo'
-    bar = Graph::ClassVertex.new 'Bar'
+    foo = Graph::Vertex.new('Foo')
+    foo.type = :module
+    bar = Graph::Vertex.new('Bar')
+    bar.type = :class
     bar.namespace = Graph::Namespace.new ['Foo']
 
     expect(graph.each.to_a).to match_array [foo, bar]
@@ -44,10 +46,13 @@ describe GraphGenerator do
     EOS
     graph = generate_graph program
 
-    foo = Graph::ModuleVertex.new 'Foo'
-    bar = Graph::ModuleVertex.new 'Bar'
+    foo = Graph::Vertex.new 'Foo'
+    foo.type = :module
+    bar = Graph::Vertex.new 'Bar'
+    bar.type = :module
     bar.namespace = Graph::Namespace.new ['Foo']
-    hello = Graph::ClassVertex.new 'Hello'
+    hello = Graph::Vertex.new 'Hello'
+    hello.type = :class
     hello.namespace = Graph::Namespace.new ['Foo', 'Bar']
 
     expect(graph.each.to_a).to match_array [foo, bar, hello]

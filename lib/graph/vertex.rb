@@ -6,12 +6,11 @@ module Graph
   class Vertex
     include Enumerable
 
-    attr_accessor :name,      # name of entity ex. 'Artist'
-                  :namespace, # namespace the entity belongs to ex. ['Performer', 'Musician']
-                  :paths      # path(s) the entity is declared ex. ['foo/bar/artist.rb']
+    attr_accessor :name, :namespace, :paths, :type
     
-    def initialize name
+    def initialize name, type=nil
       @name = name
+      @type = type
       @namespace = Namespace.new []
       @paths = Array.new
       @edges = Hash.new
@@ -37,7 +36,8 @@ module Graph
         self.name.eql?(obj.name) &&
         self.namespace.eql?(obj.namespace) &&
         self.each.to_a.eql?(obj.each.to_a) &&
-        self.paths.eql?(obj.paths)
+        self.paths.eql?(obj.paths) &&
+        self.type.eql?(obj.type)
     end
     alias_method :==, :eql?
 
@@ -57,20 +57,6 @@ module Graph
         string << "]\n"
       end
       return string.chomp
-    end
-  end
-
-  # REFACTOR consider using strategy/state instead of subclassing vertex
-
-  class ClassVertex < Vertex
-    def type
-      'class'
-    end
-  end
-
-  class ModuleVertex < Vertex
-    def type
-      'module'
     end
   end
 end

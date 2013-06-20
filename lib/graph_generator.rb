@@ -1,9 +1,9 @@
 require_relative 'exploration/resolve/simple_resolve_strategy'
 
 require_relative 'graph/digraph'
-require_relative 'graph/edge_factory'
+require_relative 'graph/edge'
 require_relative 'graph/namespace'
-require_relative 'graph/vertex_factory'
+require_relative 'graph/vertex'
 
 class GraphGenerator
   attr_reader :graph
@@ -53,13 +53,16 @@ private
 
   # REFACTOR inject VertexFactory
   def create_vertex name, namespace, type
-    v = Graph::VertexFactory.instance.get_vertex name, type
+    #v = Graph::VertexFactory.instance.get_vertex name, type
+    v = Graph::Vertex.new name
+    v.type = type
     v.namespace = Graph::Namespace.new(namespace)
     return v
   end
 
   # REFACTOR inject EdgeFactory
   def get_edge type
-    Graph::EdgeFactory.instance.get_edge type
+    #Graph::EdgeFactory.instance.get_edge type
+    Graph::Edge.new type
   end
 end

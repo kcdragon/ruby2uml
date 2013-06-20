@@ -6,7 +6,7 @@ describe Graph::Digraph do
   before :each do
     @digraph = Graph::Digraph.new
     @vertices = []
-    ['one', 'two', 'three'].each { |s| @vertices << Graph::ClassVertex.new(s) }
+    ['one', 'two', 'three'].each { |s| @vertices << Graph::Vertex.new(s, :class) }
   end
   subject { @digraph }
 
@@ -32,7 +32,7 @@ describe Graph::Digraph do
   describe "finds the vertices that match" do
     before :each do
       create = lambda do |name, namespace|
-        v = Graph::ClassVertex.new(name)
+        v = Graph::Vertex.new name, :class
         v.namespace = Graph::Namespace.new([namespace]) if !namespace.nil?
         return v
       end
