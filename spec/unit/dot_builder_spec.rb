@@ -1,3 +1,4 @@
+require_relative '../../lib/graph/edge'
 require_relative '../../lib/graph/vertex'
 require_relative '../../lib/uml/dot_builder'
 
@@ -60,5 +61,60 @@ describe DotBuilder do
   end
 
   describe ".build_relation" do
+    def get_relation_as_dot one, two, options
+      "#{one}->#{two}[" + options + "]"
+    end
+
+    def get_generalization_as_dot child, parent
+      get_relation_as_dot(parent, child, "arrowtail=empty, dir=back")
+    end
+
+    def get_aggregation_as_dot aggregator, aggregate
+      get_relation_as_dot(aggregator, aggregate, "arrowtail=odiamond, constraint=false, dir=back")
+    end
+
+    def get_dependency_as_dot vertex, depends_on
+      get_relation_as_dot(vertex, depends_on, "dir=forward, style=dashed")
+    end
+
+    it "builds relationship for generalization between classes" do
+      foo = Graph::Vertex.new 'Foo', :class
+      bar = Graph::Vertex.new 'Bar', :class
+      subject.build_entity foo
+      subject.build_entity bar
+      expect(subject.build_relation(foo, :generalization, bar)).to eq get_generalization_as_dot(1, 2)
+    end
+
+    it "builds relationship for aggregation between classes" do
+      foo = Graph::Vertex.new 'Foo', :class
+      bar = Graph::Vertex.new 'Bar', :class
+      subject.build_entity foo
+      subject.build_entity bar
+      expect(subject.build_relation(foo, :aggregation, bar)).to eq get_aggregation_as_dot(1, 2)
+    end
+
+    it "builds relationship for dependency between classes" do
+      foo = Graph::Vertex.new 'Foo', :class
+      bar = Graph::Vertex.new 'Bar', :class
+      subject.build_entity foo
+      subject.build_entity bar
+      expect(subject.build_relation(foo, :dependency, bar)).to eq get_dependency_as_dot(1, 2)
+    end
+
+    it "builds relationship for dependency between a class and a module" do
+      foo = Graph::Vertex.new 'Foo', :class
+      bar = Graph::Vertex.new 'Bar', :module
+      subject.build_entity foo
+      subject.build_entity bar
+      expect(subject.build_relation(foo, :dependency, bar)).to eq get_dependency_as_dot(1, 2)
+    end
+
+    it "builds relationship for dependency between modules" do
+      foo = Graph::Vertex.new 'Foo', :module
+      bar = Graph::Vertex.new 'Bar', :module
+      subject.build_entity foo
+      subject.build_entity bar
+      expect(subject.build_relation(foo, :dependency, bar)).to eq get_dependency_as_dot(1, 2)
+    end
   end
 end
