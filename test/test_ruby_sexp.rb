@@ -9,12 +9,6 @@ require_relative '../lib/graph_generator'
 
 class TestRubySexp < Test::Unit::TestCase
 
-private
-
-  
-
-public
-
   def test_program_with_class_inheritance
     program = "class Foo < Bar ; end"
     graph = analyze_program(program)
