@@ -6,6 +6,7 @@ describe DotBuilder do
 
   it { respond_to? :build_entity }
   it { respond_to? :build_relation }
+  it { respond_to? :build_header }
 
   describe ".build_entity" do
     
@@ -116,5 +117,13 @@ describe DotBuilder do
       subject.build_entity bar
       expect(subject.build_relation(foo, :dependency, bar)).to eq get_dependency_as_dot(1, 2)
     end
+  end
+
+  describe ".build_header" do
+    it "builds header for dot"
+  end
+
+  describe ".build_footer" do
+    it "builds footer for dot"
   end
 end
