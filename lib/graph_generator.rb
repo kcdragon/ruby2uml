@@ -51,18 +51,14 @@ private
     return vertex
   end
 
-  # REFACTOR inject VertexFactory
   def create_vertex name, namespace, type
-    #v = Graph::VertexFactory.instance.get_vertex name, type
     v = Graph::Vertex.new name
     v.type = type
     v.namespace = Graph::Namespace.new(namespace)
     return v
   end
 
-  # REFACTOR inject EdgeFactory
   def get_edge type
-    #Graph::EdgeFactory.instance.get_edge type
     Graph::Edge.new type
   end
 end
