@@ -52,6 +52,18 @@ describe Graph::Vertex do
   end
 
   describe ".each_incoming" do
-    it "enumerates incoming edges"
+    it "enumerates incoming edges" do
+      one = Graph::Vertex.new 'one', :class
+      two = Graph::Vertex.new 'two', :class
+      three = Graph::Vertex.new 'three', :class
+      one.add_edge Graph::Edge.new(:generalization), subject
+      two.add_edge Graph::Edge.new(:dependency), subject
+      three.add_edge Graph::Edge.new(:dependency), subject
+
+      expect { |b| subject.each_incoming &b }.to yield_successive_args(
+                                                              [Graph::Edge.new(:generalization), Set.new([one])],
+                                                              [Graph::Edge.new(:dependency), Set.new([two, three])]
+                                                              )
+    end
   end
 end

@@ -25,5 +25,11 @@ module Exploration
       end
       merged
     end
+
+    # For all incoming edges, for all +vertices+, change the refernce from that vertex to the merged vertex. For example, if Foo depends on Bar, and Bar was merged into Merged then Foo should now reference Bar.
+    #
+    # postcondition: all incoming edges that reference a vertex in +vertices+ will now reference +merged+.
+    def rereference_incoming_edges merged, *vertices
+    end
   end
 end

@@ -22,12 +22,12 @@ describe Exploration::ResolveStrategy do
   end
 
   context "vertex and other vertex have edges" do
+    let(:vertex) { create_vertex 'Foo', ['M'] }
+    let(:other) { create_vertex 'Foo', ['M'] }
     let(:dependent) { create_vertex 'Bar' }
 
-    context "edges are different" do
+    context "when edges are different" do
       it "adds both edges" do
-        vertex = create_vertex 'Foo', ['M']
-        other = create_vertex 'Foo', ['M']
         vertex.add_edge Graph::Edge.new(:generalization), dependent
         other.add_edge Graph::Edge.new(:dependency), dependent
         
@@ -43,10 +43,8 @@ describe Exploration::ResolveStrategy do
       end
     end
     
-    context "edges are the same" do
+    context "when edges are the same" do
       it "adds only one edge" do
-        vertex = create_vertex 'Foo', ['M']
-        other = create_vertex 'Foo', ['M']
         vertex.add_edge Graph::Edge.new(:dependency), dependent
         other.add_edge Graph::Edge.new(:dependency), dependent
         
@@ -60,6 +58,19 @@ describe Exploration::ResolveStrategy do
   end
 
   context "when another vertex references a merged vertex" do
-    
+    it "re-references vertex to reference merged vertex" do
+      vertex = create_vertex 'Foo'
+      other = create_vertex 'Foo', ['M']
+      
+      bar = create_vertex 'Bar'
+      bar.add_edge Graph::Edge.new(:dependency), vertex
+
+      merged = subject.merge_vertices(vertex, other)
+      subject.rereference_incoming_edges merged, vertex, other
+
+      dependencies = bar.get_edge(Graph::Edge.new(:dependency)).to_a
+      expect(dependencies).to match_array [merged]
+      expect(dependencies.count).to eq 1
+    end
   end
 end
