@@ -7,8 +7,9 @@ module Graph
     end
 
     def eql? object
-      object.kind_of?(self.class) && self.type.eql?(object.type)
+      self.type.eql?(object.type)
     end
+    alias_method :==, :eql?
     
     def hash
       @type.hash
