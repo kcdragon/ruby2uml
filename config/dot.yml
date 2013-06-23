@@ -1,0 +1,5 @@
+size: "\"10,10\""
+node:
+  shape: record
+  style: filled
+  fillcolor: gray95

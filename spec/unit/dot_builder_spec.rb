@@ -121,7 +121,16 @@ describe DotBuilder do
 
   describe ".build_header" do
     it "builds header for dot" do
-      expect(subject.build_header).to eq("digraph hierarchy {\n" +
+      config = {
+        "size" => "\"5,5\"",
+        "node" => {
+          "shape" => "record",
+          "style" => "filled",
+          "fillcolor" => "gray95"
+        }
+      }
+      builder = DotBuilder.new(config)
+      expect(builder.build_header).to eq("digraph hierarchy {\n" +
                                          "size=\"5,5\"\n" +
                                          "node[shape=record, style=filled, fillcolor=gray95]\n")
     end
