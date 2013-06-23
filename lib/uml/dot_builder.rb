@@ -27,6 +27,12 @@ class DotBuilder
     end
   end
 
+  def build_header
+    "digraph hierarchy {\n" +
+      "size=\"5,5\"\n" +
+      "node[shape=record, style=filled, fillcolor=gray95]\n"
+  end
+
   def build_entity vertex
     @id_counter += 1
     @vertex_to_id[vertex] = @id_counter
@@ -34,10 +40,14 @@ class DotBuilder
     ns << '::' if ns != '' # TODO don't hard code seperator
     "#{@id_counter}[label = \"{#{ns + vertex.name}|" +
       @vertex_mappings[vertex.type].call(vertex) +
-      "}\"]"
+      "}\"]\n"
   end
 
   def build_relation vertex, edge, o_vertex
-    @edge_mappings[edge].call(@vertex_to_id[vertex], @vertex_to_id[o_vertex])
+    @edge_mappings[edge].call(@vertex_to_id[vertex], @vertex_to_id[o_vertex]) + "\n"
+  end
+
+  def build_footer
+    "}"
   end
 end

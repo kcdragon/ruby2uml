@@ -19,7 +19,7 @@ describe DotBuilder do
     end
 
     def get_entity_as_dot id, name, namespace, content
-      "#{id}[label = \"{#{namespace + name}|"+ content + "}\"]"
+      "#{id}[label = \"{#{namespace + name}|"+ content + "}\"]\n"
     end
 
     it "builds module entity" do
@@ -63,7 +63,7 @@ describe DotBuilder do
 
   describe ".build_relation" do
     def get_relation_as_dot one, two, options
-      "#{one}->#{two}[" + options + "]"
+      "#{one}->#{two}[" + options + "]\n"
     end
 
     def get_generalization_as_dot child, parent
@@ -120,10 +120,16 @@ describe DotBuilder do
   end
 
   describe ".build_header" do
-    it "builds header for dot"
+    it "builds header for dot" do
+      expect(subject.build_header).to eq("digraph hierarchy {\n" +
+                                         "size=\"5,5\"\n" +
+                                         "node[shape=record, style=filled, fillcolor=gray95]\n")
+    end
   end
 
   describe ".build_footer" do
-    it "builds footer for dot"
+    it "builds footer for dot" do
+      expect(subject.build_footer).to eq "}"
+    end
   end
 end

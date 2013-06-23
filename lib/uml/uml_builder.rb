@@ -6,7 +6,7 @@ module UmlBuilder
 
   def build_uml graph
     content = ''
-    content = build_header if self.respond_to? :build_header
+    content << build_header if self.respond_to? :build_header
     graph.each do |vertex|
       content << build_entity(vertex)
     end
@@ -18,7 +18,7 @@ module UmlBuilder
         end
       end
     end
-    content = build_footer if self.respond_to? :build_footer
+    content << build_footer if self.respond_to? :build_footer
     content
   end
 end
