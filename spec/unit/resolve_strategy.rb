@@ -58,4 +58,8 @@ describe Exploration::ResolveStrategy do
       end
     end
   end
+
+  context "when another vertex references a merged vertex" do
+    
+  end
 end

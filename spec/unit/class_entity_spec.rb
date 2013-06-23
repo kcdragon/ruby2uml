@@ -30,8 +30,8 @@ describe Exploration::ClassEntity do
       expect { |b| subject.each(sexp, nil, &b) }.to_not yield_control
     end
 
-    it "explores multiple top-level classes" do
+    it "explores multiple top-level classes"# do
       #program = "class Bar; end; class Foo; end"
-    end
+    #end
   end
 end

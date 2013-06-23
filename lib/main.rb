@@ -22,8 +22,8 @@ generator = GraphGenerator.new
 generator.process_sexp explorer, sexp
 graph = generator.graph
 
-pp graph
-
 #out = File.new('out.dot', 'w')
 #out.puts DotBuilder.new.build_uml(graph)
 #out.close
+
+puts DotBuilder.new.build_uml(graph)
