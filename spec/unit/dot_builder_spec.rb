@@ -7,6 +7,20 @@ describe DotBuilder do
   it { respond_to? :build_entity }
   it { respond_to? :build_relation }
   it { respond_to? :build_header }
+  it { respond_to? :build_footer }
+
+  subject(:dot_builder) do
+    config = { 'delimiter' => '::' }
+    dot_config = {
+      "size" => "\"5,5\"",
+      "node" => {
+        "shape" => "record",
+        "style" => "filled",
+        "fillcolor" => "gray95"
+      }
+    }
+    DotBuilder.new(config, dot_config)
+  end
 
   describe ".build_entity" do
     
@@ -121,16 +135,7 @@ describe DotBuilder do
 
   describe ".build_header" do
     it "builds header for dot" do
-      config = {
-        "size" => "\"5,5\"",
-        "node" => {
-          "shape" => "record",
-          "style" => "filled",
-          "fillcolor" => "gray95"
-        }
-      }
-      builder = DotBuilder.new(config)
-      expect(builder.build_header).to eq("digraph hierarchy {\n" +
+      expect(dot_builder.build_header).to eq("digraph hierarchy {\n" +
                                          "size=\"5,5\"\n" +
                                          "node[shape=record, style=filled, fillcolor=gray95]\n")
     end

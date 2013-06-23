@@ -3,8 +3,9 @@ require_relative 'uml_builder'
 class DotBuilder
   include UmlBuilder
 
-  def initialize config={}
+  def initialize config={}, dot_config={}
     @config = config
+    @dot_config = dot_config
 
     @id_counter = 0
     @vertex_to_id = Hash.new
@@ -32,10 +33,10 @@ class DotBuilder
   def build_header
     top = "digraph hierarchy {\n"
     size = ""
-    size = "size=#{@config["size"]}\n" if @config.has_key? "size"
-    if @config.has_key? "node"
+    size = "size=#{@dot_config["size"]}\n" if @dot_config.has_key? "size"
+    if @dot_config.has_key? "node"
       node = "node["
-      @config["node"].each do |k, v|
+      @dot_config["node"].each do |k, v|
         node << "#{k}=#{v}, "
       end
       node.chomp!(", ")
@@ -49,9 +50,8 @@ class DotBuilder
   def build_entity vertex
     @id_counter += 1
     @vertex_to_id[vertex] = @id_counter
-    ns = vertex.namespace.to_s
-    ns << '::' if ns != '' # TODO don't hard code seperator
-    "#{@id_counter}[label = \"{#{ns + vertex.name}|" +
+    name = vertex.fully_qualified_name(@config["delimiter"])
+    "#{@id_counter}[label = \"{#{name}|" +
       @vertex_mappings[vertex.type].call(vertex) +
       "}\"]\n"
   end

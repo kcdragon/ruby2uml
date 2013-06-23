@@ -5,7 +5,8 @@ require_relative 'graph_generator'
 require_relative 'sexp_factory'
 require_relative 'uml/dot_builder'
 
-config = YAML.load_file 'config/dot.yml'
+config = YAML.load_file 'config/config.yml'
+dot_config = YAML.load_file 'config/dot.yml'
 
 if ARGV.length == 0
   puts 'Must include a file name as an argument.'
@@ -22,4 +23,4 @@ generator = GraphGenerator.new
 generator.process_sexp explorer, sexp
 graph = generator.graph
 
-puts DotBuilder.new(config).build_uml(graph)
+puts DotBuilder.new(config, dot_config).build_uml(graph)

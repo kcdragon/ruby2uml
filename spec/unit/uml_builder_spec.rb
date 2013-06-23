@@ -56,9 +56,7 @@ describe UmlBuilder do
         impl = Class.new do
           include UmlBuilder
           def build_entity(vertex)
-            ns = vertex.namespace.to_s
-            ns << '::' if ns != ''
-            "#{ns}#{vertex.name}\n"
+            vertex.fully_qualified_name('::') + "\n"
           end
           def build_relation(vertex, edge, o_vertex); ''; end
         end
@@ -72,9 +70,7 @@ describe UmlBuilder do
           def build_entity(vertex); ''; end
           def build_relation(vertex, edge, o_vertex)
             get_name = lambda do |v|
-              ns = v.namespace.to_s
-              ns << '::' if ns != ''
-              ns + v.name
+              v.fully_qualified_name '::'
             end
             "#{get_name.call(vertex)}->#{get_name.call(o_vertex)}"
           end

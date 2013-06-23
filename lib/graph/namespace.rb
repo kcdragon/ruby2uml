@@ -1,8 +1,13 @@
+require 'forwardable'
+
 module Graph
   
   # Instances of Namespace are immutable.
   class Namespace
     include Enumerable
+    extend Forwardable
+
+    def_delegators :@array, :join
 
     def initialize array
       @array = array || Array.new # do not want a nil array for namespace, better to have an empty array
@@ -41,7 +46,6 @@ module Graph
     end
 
     def to_s
-      # TODO change delimiter based on language or find a language independent delimiter
       @array.join '::'
     end
   end

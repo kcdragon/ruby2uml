@@ -5,9 +5,9 @@ require_relative '../../lib/graph/vertex'
 describe Graph::Vertex do
 
   let(:vertex) do
-    g = Graph::Vertex.new 'foo', :class
-    g.namespace = Graph::Namespace.new ['ns']
-    g
+    v = Graph::Vertex.new 'foo', :class
+    v.namespace = Graph::Namespace.new ['ns']
+    v
   end
   subject { vertex }
 
@@ -24,6 +24,21 @@ describe Graph::Vertex do
       lambda {
         subject.add_edge edge, another_vertex
       }.should change(subject[Graph::Edge.new(:aggregation)], :count).by(1)
+    end
+  end
+
+  describe ".fully_qualified_name" do
+    context "when there is a namespace" do
+      it "includes namespace and name, seperated by delimiter" do
+        expect(subject.fully_qualified_name('::')).to eq 'ns::foo'
+      end
+    end
+    
+    context "when there is not a namespace" do
+      it "only includes name and there is not delimiter" do
+        v = Graph::Vertex.new 'Foo', :class
+        expect(v.fully_qualified_name('::')).to eq 'Foo'
+      end
     end
   end
 

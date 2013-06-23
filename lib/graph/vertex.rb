@@ -59,10 +59,15 @@ module Graph
       @name.hash
     end
 
+    def fully_qualified_name delimiter
+      ns = self.namespace.join delimiter
+      ns << delimiter if ns != ''
+      ns + self.name
+    end
+
     def to_s
-      string = ''
-      string = "#{@namespace}::" if @namespace.to_s != ''
-      string += "#{@name}~#{type}\n"
+      string = full_qualified_name '::'
+      string += "~#{type}\n"
       @outgoing.each do |edge, set|
         string << "\t#{edge.to_s}: [ "
         set.each do |v|
