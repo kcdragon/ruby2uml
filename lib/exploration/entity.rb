@@ -20,6 +20,9 @@ module Exploration
     # Explore each Sexp with type +type+ (ex. :class, :module).
     def each_type sexp, type, context=nil, &block
       # TODO this is still a little awkward, need to take a closer look later
+      
+      return if context.nil? && sexp.first != type
+      
       if context == nil && sexp.first == type # if there is no context (parent sexp) and top-level sexp matches type, then just explore that
         yield_entity sexp, context, type, &block
       else

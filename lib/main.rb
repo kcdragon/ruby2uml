@@ -9,6 +9,7 @@ require_relative 'exploration/dependency_relation'
 require_relative 'exploration/parent_relation'
 require_relative 'graph_generator'
 require_relative 'sexp_factory'
+require_relative 'uml/dot_builder'
 
 # REFACTOR into command line arguments
 FILE_NAME = 'data/edge.rb'
@@ -21,4 +22,8 @@ generator = GraphGenerator.new
 generator.process_sexp explorer, sexp
 graph = generator.graph
 
-puts graph
+pp graph
+
+#out = File.new('out.dot', 'w')
+#out.puts DotBuilder.new.build_uml(graph)
+#out.close
