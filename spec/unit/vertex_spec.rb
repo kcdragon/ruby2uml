@@ -50,4 +50,8 @@ describe Graph::Vertex do
                                                               )
     end
   end
+
+  describe ".each_incoming" do
+    it "enumerates incoming edges"
+  end
 end

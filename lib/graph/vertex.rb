@@ -13,22 +13,31 @@ module Graph
       @type = type
       @namespace = Namespace.new []
       @paths = Array.new
-      @edges = Hash.new
+
+      @outgoing = Hash.new
+      @incoming = Hash.new
     end
 
     def get_edge edge
-      @edges[edge] = Set.new if !@edges.has_key? edge
-      @edges[edge]
+      @outgoing[edge] = Set.new if !@outgoing.has_key? edge
+      @outgoing[edge]
     end
     alias_method :[], :get_edge
 
     def add_edge edge, vertex
-      @edges[edge] = Set.new if !@edges.has_key? edge
-      @edges[edge] << vertex
+      @outgoing[edge] = Set.new if !@outgoing.has_key? edge
+      @outgoing[edge] << vertex
+
+      vertex.add_incoming_edge edge, self
     end
 
     def each &block
-      @edges.each &block
+      @outgoing.each &block
+    end
+    alias_method :each_outgoing, :each
+
+    def each_incoming &block
+      @incoming.each &block
     end
 
     def eql? obj
@@ -49,7 +58,7 @@ module Graph
       string = ''
       string = "#{@namespace}::" if @namespace.to_s != ''
       string += "#{@name}~#{type}\n"
-      @edges.each do |edge, set|
+      @outgoing.each do |edge, set|
         string << "\t#{edge.to_s}: [ "
         set.each do |v|
           string << "#{v.name.to_s},"
@@ -57,6 +66,12 @@ module Graph
         string << "]\n"
       end
       return string.chomp
+    end
+
+  protected
+    def add_incoming_edge edge, vertex
+      @incoming[edge] = Set.new if !@incoming.has_key? edge
+      @incoming[edge] << vertex
     end
   end
 end
