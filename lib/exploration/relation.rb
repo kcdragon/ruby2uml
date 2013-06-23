@@ -11,7 +11,6 @@ module Exploration
           method_body = method_node.rest.rest.rest
           method_body.deep_each do |sub_sexp|
             types_to_search.each do |type, callback|
-              # TODO get this to work whether type is single symbol or array of symbols
               if type.include? sub_sexp.first
                 callback.call(sub_sexp)
               end
