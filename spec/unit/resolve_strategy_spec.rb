@@ -3,7 +3,8 @@ require_relative '../../lib/graph/edge'
 require_relative '../../lib/graph/vertex'
 
 describe Exploration::ResolveStrategy do
-  it { respond_to :merge_vertices }
+  it { respond_to? :merge_vertices }
+  it { respond_to? :rereference_incoming_edges! }
 
   def create_vertex name, namespace=[], paths=[]
     v = Graph::Vertex.new(name, :class)
@@ -12,65 +13,68 @@ describe Exploration::ResolveStrategy do
     v
   end
 
-  it "should merge vertices" do
-    one = create_vertex 'foo', []
-    two = create_vertex 'foo', ['m2']
-    three = create_vertex 'foo', ['m1', 'm2']
-    expect(
-           subject.merge_vertices(one, two, three)
-           ).to eq create_vertex('foo', ['m1', 'm2'])
+  let(:foo) { create_vertex 'Foo' }
+  let(:m_foo) { create_vertex 'Foo', ['M'] }
+  let(:bar) { create_vertex 'Bar' }
+  let(:edge) { Graph::Edge.new(:dependency) }
+  let(:edge2) { Graph::Edge.new(:generalization) }
+
+  describe ".merge_vertices" do
+    it "merges different edges" do
+      foo.add_edge edge2, bar
+      m_foo.add_edge edge, bar
+
+      merged = subject.merge_vertices(foo, m_foo)
+
+      expect(merged.get_edge(edge2).to_a).to match_array [bar]
+      expect(merged.get_edge(edge).to_a).to match_array [bar]
+    end
+
+    it "merges only one edge when there are two of the same edges" do
+      foo.add_edge edge2, bar
+      m_foo.add_edge edge, bar
+
+      merged = subject.merge_vertices(foo, m_foo)
+
+      expect(merged.get_edge(edge).to_a).to match_array [bar]
+    end
   end
 
-  context "vertex and other vertex have edges" do
-    let(:vertex) { create_vertex 'Foo', ['M'] }
-    let(:other) { create_vertex 'Foo', ['M'] }
-    let(:dependent) { create_vertex 'Bar' }
+  describe ".rereference_incoming_edges!" do
+    let(:car) { create_vertex 'Car' }
 
-    context "when edges are different" do
-      it "adds both edges" do
-        vertex.add_edge Graph::Edge.new(:generalization), dependent
-        other.add_edge Graph::Edge.new(:dependency), dependent
-        
-        merged = subject.merge_vertices(vertex, other)
-
-        generalizations = merged.get_edge(Graph::Edge.new(:generalization)).to_a
-        expect(generalizations).to match_array [dependent]
-        expect(generalizations.count).to eq 1
-
-        dependencies = merged.get_edge(Graph::Edge.new(:dependency)).to_a
-        expect(dependencies).to match_array [dependent]
-        expect(dependencies.count).to eq 1
-      end
+    def merge_and_rereference *vertices
+      merged = subject.merge_vertices *vertices
+      subject.rereference_incoming_edges! merged, *vertices
+      merged
     end
     
-    context "when edges are the same" do
-      it "adds only one edge" do
-        vertex.add_edge Graph::Edge.new(:dependency), dependent
-        other.add_edge Graph::Edge.new(:dependency), dependent
-        
-        merged = subject.merge_vertices(vertex, other)
-
-        dependencies = merged.get_edge(Graph::Edge.new(:dependency)).to_a
-        expect(dependencies).to match_array [dependent]
-        expect(dependencies.count).to eq 1
-      end
+    it "re-references no edges" do
+      bar.add_edge edge, car
+      merged = merge_and_rereference foo, m_foo
+      expect(bar.get_edge(edge).to_a).to match_array [car]
     end
-  end
 
-  context "when another vertex references a merged vertex" do
-    it "re-references vertex to reference merged vertex" do
-      vertex = create_vertex 'Foo'
-      other = create_vertex 'Foo', ['M']
-      
-      bar = create_vertex 'Bar'
-      bar.add_edge Graph::Edge.new(:dependency), vertex
+    it "re-references one edge for one vertex" do
+      bar.add_edge edge, foo
+      merged = merge_and_rereference foo, m_foo
+      expect(bar.get_edge(edge).to_a).to match_array [merged]
+    end
 
-      merged = subject.merge_vertices(vertex, other)
-      subject.rereference_incoming_edges merged, vertex, other
+    it "re-references one edge for multiple vertices" do
+      bar.add_edge edge, foo
+      car.add_edge edge, foo
+      merged = merge_and_rereference foo, m_foo
+      expect(bar.get_edge(edge).to_a).to match_array [merged]
+      expect(car.get_edge(edge).to_a).to match_array [merged]
+    end
 
-      dependencies = bar.get_edge(Graph::Edge.new(:dependency)).to_a
-      expect(dependencies).to match_array [merged]
-      expect(dependencies.count).to eq 1
+    it "re-references multiple edges for one vertex" do
+      bar.add_edge edge, foo
+      bar.add_edge edge2, foo
+      merged = merge_and_rereference foo, m_foo
+      expect(bar.get_edge(edge).to_a).to match_array [merged]
+      expect(bar.get_edge(edge2).to_a).to match_array [merged]
     end
   end
 end

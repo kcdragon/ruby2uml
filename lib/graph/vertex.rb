@@ -31,6 +31,11 @@ module Graph
       vertex.add_incoming_edge edge, self
     end
 
+    def remove_edge edge, vertex
+      @outgoing[edge].delete vertex
+      vertex.remove_incoming_edge edge, self
+    end
+
     def each &block
       @outgoing.each &block
     end
@@ -72,6 +77,10 @@ module Graph
     def add_incoming_edge edge, vertex
       @incoming[edge] = Set.new if !@incoming.has_key? edge
       @incoming[edge] << vertex
+    end
+
+    def remove_incoming_edge edge, vertex
+      @incoming[edge].delete vertex if @incoming.has_key? edge
     end
   end
 end
