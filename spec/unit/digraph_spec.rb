@@ -50,7 +50,6 @@ describe Graph::Digraph do
       end
 
       it "not match when namespace is incorrect" do
-        
         expect(
                subject.find_vertex('Bar', Graph::Namespace.new(['Hello']))
                ).to be_empty
@@ -75,10 +74,7 @@ describe Graph::Digraph do
   end
 
   it "enumerates the vertices" do
-    subject.add_vertex @vertices[0]
-    subject.add_vertex @vertices[1]
-    subject.add_vertex @vertices[2]
-    
-    expect(subject.each.to_a).to match_array @vertices
+    @vertices.each { |v| subject.add_vertex v }
+    expect { |b| subject.each(&b) }.to yield_successive_args @vertices[0], @vertices[1], @vertices[2]
   end
 end
