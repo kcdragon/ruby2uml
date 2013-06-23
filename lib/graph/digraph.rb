@@ -8,12 +8,6 @@ module Graph
       @vertices = Array.new
     end
 
-    # Returns the first Vertex with vertex_name as a name. DON'T USE THIS METHOD.
-    def get_vertex vertex_name
-      # TODO change this method to either accept name, namespace, and paths arguments, OR a Vertex object that it uses to search the vertices array for a Vertex that matches
-      @vertices.select { |v| v.name == vertex_name }.first
-    end
-
     # Returns an Array of Vertices that match the name, namespace and path.
     def find_vertex name, namespace=nil, path=nil # REFACTOR consider changing this to a Vertex object
       @vertices.select do |v|

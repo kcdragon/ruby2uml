@@ -10,7 +10,6 @@ describe Graph::Digraph do
   end
   subject { @digraph }
 
-  it { should respond_to :get_vertex }
   it { should respond_to :find_vertex }
   it { should respond_to :has_vertex? }
   it { should respond_to :add_vertex }

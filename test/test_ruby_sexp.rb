@@ -103,7 +103,7 @@ private
     
     vars = Array.new
     vertices.each do |v|
-      vars << graph.get_vertex(v)
+      vars << graph.find_vertex(v).first
     end
     return vars
   end
