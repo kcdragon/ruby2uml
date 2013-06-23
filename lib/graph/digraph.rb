@@ -1,3 +1,5 @@
+require 'set'
+
 module Graph
   class Digraph
     include Enumerable
@@ -38,6 +40,16 @@ module Graph
     def each &block
       @vertices.each &block
     end
+
+    def eql? obj
+      Set.new(self.vertices).eql? Set.new(obj.vertices)
+      
+    end
+    alias_method :==, :eql?
+    
+    protected
+    attr_reader :vertices # needed for eql?
+    public
 
     def to_s
       @vertices.map(&:to_s).join("\n")

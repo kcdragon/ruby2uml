@@ -66,7 +66,7 @@ module Graph
       @outgoing.each do |edge, set|
         string << "\t#{edge.to_s}: [ "
         set.each do |v|
-          string << "#{v.name.to_s},"
+          string << "#{v.namespace.to_s}#{'::' if v.namespace.to_s != ''}#{v.name.to_s},"
         end
         string << "]\n"
       end

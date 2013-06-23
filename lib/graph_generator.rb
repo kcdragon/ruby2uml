@@ -39,6 +39,7 @@ private
       new_vertex = create_vertex(name, namespace, type)
       if @resolve_strategy.is_same?(found_vertex, new_vertex)
         vertex = @resolve_strategy.merge_vertices(found_vertex, new_vertex)
+        @resolve_strategy.rereference_incoming_edges!(vertex, found_vertex, new_vertex)
         graph.remove_vertex found_vertex
         graph.remove_vertex new_vertex
       else
