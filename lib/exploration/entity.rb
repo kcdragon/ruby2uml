@@ -19,12 +19,16 @@ module Exploration
 
     # Explore each Sexp with type +type+ (ex. :class, :module).
     def each_type sexp, type, context=nil, &block
-      # TODO this is still a little awkward, need to take a closer look later
-      
+      # a nil context implies that nothing has been explored yet
+
+      # if nothing has been explored and the top element does not match what we are exploring, skip exploring this sexp
       return if context.nil? && sexp.first != type
       
-      if context == nil && sexp.first == type # if there is no context (parent sexp) and top-level sexp matches type, then just explore that
+      # if there is no context and top-level sexp matches type, then just explore that
+      if context == nil && sexp.first == type
         yield_entity sexp, context, type, &block
+
+      # otherwise, explore the children of the sexp
       else
         sexp.each_child do |sub_sexp|
           if sub_sexp.head == type
