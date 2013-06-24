@@ -1,3 +1,4 @@
+require_relative '../sexp_ext'
 require_relative 'explorable'
 
 module Exploration
@@ -19,5 +20,7 @@ module Exploration
         end
       end
     end
+
+    
   end
 end
