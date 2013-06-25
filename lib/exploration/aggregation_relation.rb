@@ -6,15 +6,12 @@ module Exploration
 
     # Yields aggregation relationships in +sexp+
     def each sexp, context=nil, &block
+      yielded = []
       callbacks = {
         [:iasgn, :cvasgn] => lambda do |sexp| # search inside instance and class assignment variables
           rhs = sexp.rest.rest # right-hand-side of assignment
-          rhs.each_of_type(:const) do |node|
-            name = node.rest.head.to_s # name of the aggregated class
-            # REFACTOR pull up
-            # TODO get namespace (if present)
-            block.call context, :aggregation, { name: name, type: :class }
-          end
+          explore_sexp_with_namespace rhs, :aggregation, context, yielded, &block
+          explore_sexp_without_namespace rhs, :aggregation, context, yielded, &block # by exploring :colon2 first, we won't pick up any :const that was inside a :colon2
         end
       }
       # REFACTOR extract to superclass, possibly use template method to get the callbacks and have the each in a superclass

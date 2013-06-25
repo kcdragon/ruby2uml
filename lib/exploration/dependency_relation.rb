@@ -8,15 +8,9 @@ module Exploration
       yielded = []
       callbacks = {
         [:call] => lambda do |sexp| # search for call statements
-          sexp.rest.each_of_type(:const) do |dependency_node|
-            if !yielded.include?(dependency_node) # HACK currently, don't want dependencies being yielded twice
-              dependency_name = dependency_node.rest.head.to_s # name of the dependenct class
-              # REFACTOR pull up
-              # TODO get namespace (if present)
-              block.call context, :dependency, { name: dependency_name, type: :class }
-              yielded << dependency_node
-            end
-          end
+          call_body = sexp.rest
+          explore_sexp_with_namespace call_body, :dependency, context, yielded, &block
+          explore_sexp_without_namespace call_body, :dependency, context, yielded, &block # by exploring :colon2 first, we won't pick up any :const that was inside a :colon2
         end
       }
       # REFACTOR extract to superclass, possibly use template method to get the callbacks and have the each in a superclass

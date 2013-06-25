@@ -15,7 +15,7 @@ describe Exploration::ClassEntity do
         subject.each(get_sexp(program), nil, &b)
       end.to yield_successive_args(
                                    { name: 'Foo', type: :class, namespace: [] },
-                                   [{ name: 'Foo', type: :class, namespace: [] }, :dependency, { name: 'Hello', type: :class }])
+                                   [{ name: 'Foo', type: :class, namespace: [] }, :dependency, { name: 'Hello', type: :class, namespace: [] }])
     end
 
     it "does not have a dependency" do
