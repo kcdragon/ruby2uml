@@ -1,8 +1,8 @@
 require_relative '../sexp_ext'
-require_relative 'explorable'
+require_relative 'explorer'
 
 module Exploration
-  class Relation < Explorable
+  class Relation < Explorer
 
     # Examines each child of +sexp+ and explores that child if it matches +type+. Searches the child for matches of the keys in +types_to_search+ and calls the Proc on that sexp for any matches.
     #

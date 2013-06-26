@@ -1,8 +1,8 @@
 require_relative '../sexp_ext'
-require_relative 'explorable'
+require_relative 'explorer'
 
 module Exploration
-  class Entity < Explorable
+  class Entity < Explorer
     
     def initialize
       @explorers = Array.new
