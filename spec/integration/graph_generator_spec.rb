@@ -1,20 +1,9 @@
-require_relative '../../lib/exploration/explorer_builder'
 require_relative '../../lib/graph/namespace'
 require_relative '../../lib/graph/vertex'
-require_relative '../../lib/graph_generator'
-require_relative '../../lib/sexp_factory'
+require_relative 'graph_generator_helper'
 
 describe GraphGenerator do
-  def generate_graph *programs
-    sf = SexpFactory.instance
-    explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
-    generator = GraphGenerator.new
-    programs.each do |p|
-      sexp = sf.get_sexp p, 'rb'
-      generator.process_sexp explorer, sexp
-    end
-    generator.graph
-  end
+  include GraphGeneratorHelper
 
   it "generates a graph with class inside one module" do
     program = <<-EOS
@@ -26,13 +15,11 @@ describe GraphGenerator do
 
     graph = generate_graph program
 
-    foo = Graph::Vertex.new('Foo')
-    foo.type = :module
-    bar = Graph::Vertex.new('Bar')
-    bar.type = :class
+    foo = Graph::Vertex.new 'Foo', :module
+    bar = Graph::Vertex.new 'Bar', :class
     bar.namespace = Graph::Namespace.new ['Foo']
 
-    expect(graph.each.to_a).to match_array [foo, bar]
+    expect { |b| graph.each(&b) }.to yield_successive_args foo, bar
   end
 
   it "generates a graph with class inside two modules" do
@@ -52,7 +39,7 @@ describe GraphGenerator do
     hello = Graph::Vertex.new 'Hello', :class
     hello.namespace = Graph::Namespace.new ['Foo', 'Bar']
 
-    expect(graph.each.to_a).to match_array [foo, bar, hello]
+    expect { |b| graph.each(&b) }.to yield_successive_args foo, bar, hello
   end
 
   it "rereferences references to a merged vertex" do
