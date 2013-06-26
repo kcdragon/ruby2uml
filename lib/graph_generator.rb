@@ -53,10 +53,7 @@ private
   end
 
   def create_vertex name, namespace, type
-    v = Graph::Vertex.new name
-    v.type = type
-    v.namespace = Graph::Namespace.new(namespace)
-    return v
+    Graph::Vertex.new name, type, namespace
   end
 
   def get_edge type

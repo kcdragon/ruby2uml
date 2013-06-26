@@ -16,8 +16,7 @@ describe GraphGenerator do
     graph = generate_graph program
 
     foo = Graph::Vertex.new 'Foo', :module
-    bar = Graph::Vertex.new 'Bar', :class
-    bar.namespace = Graph::Namespace.new ['Foo']
+    bar = Graph::Vertex.new 'Bar', :class, ['Foo']
 
     expect { |b| graph.each(&b) }.to yield_successive_args foo, bar
   end
@@ -34,10 +33,8 @@ describe GraphGenerator do
     graph = generate_graph program
 
     foo = Graph::Vertex.new 'Foo', :module
-    bar = Graph::Vertex.new 'Bar', :module
-    bar.namespace = Graph::Namespace.new ['Foo']
-    hello = Graph::Vertex.new 'Hello', :class
-    hello.namespace = Graph::Namespace.new ['Foo', 'Bar']
+    bar = Graph::Vertex.new 'Bar', :module, ['Foo']
+    hello = Graph::Vertex.new 'Hello', :class, ['Foo', 'Bar']
 
     expect { |b| graph.each(&b) }.to yield_successive_args foo, bar, hello
   end
@@ -47,8 +44,7 @@ describe GraphGenerator do
     program2 = "module Bar; class Hello; end; end"
 
     foo = Graph::Vertex.new 'Foo', :class
-    hello = Graph::Vertex.new 'Hello', :class
-    hello.namespace = Graph::Namespace.new ['Bar']
+    hello = Graph::Vertex.new 'Hello', :class, ['Bar']
     bar = Graph::Vertex.new 'Bar', :module
 
     foo.add_edge Graph::Edge.new(:dependency), hello

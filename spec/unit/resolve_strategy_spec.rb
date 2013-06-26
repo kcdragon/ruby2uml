@@ -7,8 +7,7 @@ describe Exploration::ResolveStrategy do
   it { respond_to? :rereference_incoming_edges! }
 
   def create_vertex name, namespace=[], paths=[]
-    v = Graph::Vertex.new(name, :class)
-    v.namespace = Graph::Namespace.new(namespace)
+    v = Graph::Vertex.new name, :class, namespace
     v.paths = paths
     v
   end

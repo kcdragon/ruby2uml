@@ -31,14 +31,13 @@ describe Graph::Digraph do
   describe "finds the vertices that match" do
     before :each do
       create = lambda do |name, namespace|
-        v = Graph::Vertex.new name, :class
-        v.namespace = Graph::Namespace.new([namespace]) if !namespace.nil?
+        v = Graph::Vertex.new name, :class, namespace
         return v
       end
       @digraph = Graph::Digraph.new
-      @one = create.call('Bar', 'Foo')
-      @two = create.call('Bar', nil)
-      @three = create.call('World', 'Hello')
+      @one = create.call('Bar', ['Foo'])
+      @two = create.call('Bar', [])
+      @three = create.call('World', ['Hello'])
       @digraph.add_vertex @one
       @digraph.add_vertex @two
       @digraph.add_vertex @three

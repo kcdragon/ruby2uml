@@ -8,10 +8,10 @@ module Graph
 
     attr_accessor :name, :namespace, :paths, :type
     
-    def initialize name, type=nil
+    def initialize name, type, namespace=[]
       @name = name
       @type = type
-      @namespace = Namespace.new []
+      @namespace = Namespace.new namespace
       @paths = Array.new
 
       @outgoing = Hash.new

@@ -11,10 +11,8 @@ describe UmlBuilder do
   describe ".build_uml" do
 
     let(:graph) do
-      c = Graph::Vertex.new 'Class', :class
-      c.namespace = Graph::Namespace.new ['M']
-      m = Graph::Vertex.new 'Module', :module
-      m.namespace = Graph::Namespace.new ['N']
+      c = Graph::Vertex.new 'Class', :class, ['M']
+      m = Graph::Vertex.new 'Module', :module, ['N']
       
       e = Graph::Edge.new :dependency
       m.add_edge e, c

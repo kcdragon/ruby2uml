@@ -44,8 +44,7 @@ describe Graph::Vertex do
 
   describe ".eql?" do
     it "equates equal vertices" do
-      v = Graph::Vertex.new 'foo', :class
-      v.namespace = Graph::Namespace.new ['ns']
+      v = Graph::Vertex.new 'foo', :class, ['ns']
       expect(subject.eql?(v)).to be_true
     end
   end

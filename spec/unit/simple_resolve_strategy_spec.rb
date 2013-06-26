@@ -3,11 +3,7 @@ require_relative '../../lib/graph/digraph'
 require_relative '../../lib/graph/vertex'
 
 describe Exploration::SimpleResolveStrategy do
-  let(:vertex) do
-    vertex = Graph::Vertex.new 'Foo', :class
-    vertex.namespace = Graph::Namespace.new ['M']
-    vertex
-  end
+  let(:vertex) { Graph::Vertex.new 'Foo', :class, ['M'] }
   
   it { respond_to :is_same? }
   it { respond_to :merge_vertices }
