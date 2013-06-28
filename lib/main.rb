@@ -1,6 +1,7 @@
 require 'optparse'
 require 'yaml'
 
+require_relative 'directory_traverser'
 require_relative 'exploration/explorer_builder'
 require_relative 'graph_generator'
 require_relative 'sexp_factory'
@@ -31,14 +32,22 @@ if ARGV.length == 0
   exit
 end
 
-file_name = ARGV[0]
-file = File.open file_name, 'rb' # open file as binary to read into one string
-program = file.read
+explore_file = lambda do |file_name|
+  file = File.open file_name, 'rb' # open file as binary to read into one string
+  program = file.read
+  SexpFactory.instance.get_sexp program, 'rb'
+end
 
-sexp = SexpFactory.instance.get_sexp program, 'rb'
-explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
+paths = ARGV
+traverser = DirectoryTraverser.new explore_file
 generator = GraphGenerator.new
-generator.process_sexp explorer, sexp
+explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
+traverser.process(*paths) do |file, sexp|
+  require 'pp'
+  pp sexp
+  generator.process_sexp explorer, sexp
+end
+
 graph = generator.graph
 
 puts DotBuilder.new(config, dot_config).build_uml(graph)
