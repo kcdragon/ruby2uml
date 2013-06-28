@@ -1,3 +1,4 @@
+require 'optparse'
 require 'yaml'
 
 require_relative 'exploration/explorer_builder'
@@ -7,6 +8,23 @@ require_relative 'uml/dot_builder'
 
 config = YAML.load_file 'config/config.yml'
 dot_config = YAML.load_file 'config/dot.yml'
+
+options = {}
+optparse = OptionParser.new do|opts|
+  opts.banner = "Usage: main.rb [options] file dir ..."
+  
+  options[:verbose] = false
+  opts.on('-v', '--verbose', 'Display progress') do
+    options[:verbose] = true
+  end
+
+  opts.on('-h', '--help', 'Display this screen') do
+    puts opts
+    exit
+  end
+end
+
+optparse.parse!
 
 if ARGV.length == 0
   puts 'Must include a file name as an argument.'
