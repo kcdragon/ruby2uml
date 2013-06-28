@@ -1,3 +1,4 @@
+require_relative 'block_entity'
 require_relative 'class_entity'
 require_relative 'module_entity'
 require_relative 'root_entity'
@@ -36,9 +37,14 @@ module Exploration
       module_entity.add_explorer class_entity
       module_entity.add_explorer dep
 
+      block_entity = BlockEntity.new
+      block_entity.add_explorer module_entity
+      block_entity.add_explorer class_entity
+
       root = RootEntity.new
       root.add_explorer class_entity
       root.add_explorer module_entity
+      root.add_explorer block_entity
 
       return root
     end

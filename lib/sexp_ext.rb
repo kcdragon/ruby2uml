@@ -8,6 +8,8 @@ class Sexp < Array
       children = rest.rest.rest
     elsif type == :module
       children = rest.rest
+    elsif type == :block
+      children = rest
     else
       raise "Unsupported type for each_child method: #{type}"
     end
