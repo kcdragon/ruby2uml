@@ -1,4 +1,3 @@
-require_relative '../../lib/graph/namespace'
 require_relative '../../lib/graph/vertex'
 require_relative 'graph_generator_helper'
 
@@ -57,7 +56,6 @@ describe GraphGenerator do
     expect(generate_graph(program1, program2)).to eq graph
   end
 
-  it "generates a graph with multiple classes"
   it "generates a graph for multiple programs w/ and w/o namespaces" do
     program1 = <<-EOS
       module Music
