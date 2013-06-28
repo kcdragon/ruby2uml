@@ -66,7 +66,7 @@ module Graph
     end
 
     def to_s
-      string = full_qualified_name '::'
+      string = fully_qualified_name '::'
       string += "~#{type}\n"
       @outgoing.each do |edge, set|
         string << "\t#{edge.to_s}: [ "
