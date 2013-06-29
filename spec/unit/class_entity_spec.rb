@@ -27,9 +27,5 @@ describe Exploration::ClassEntity do
       program = "module Bar; class Foo; end; end"
       expect { |b| subject.each(get_sexp(program), nil, &b) }.to_not yield_control
     end
-
-    it "explores multiple top-level classes"# do
-      #program = "class Bar; end; class Foo; end"
-    #end
   end
 end
