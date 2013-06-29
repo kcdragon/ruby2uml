@@ -5,7 +5,7 @@ require_relative 'root_entity'
 require_relative 'aggregation_relation'
 require_relative 'dependency_relation'
 require_relative 'implements_relation'
-require_relative 'parent_relation'
+require_relative 'generalization_relation'
 
 module Exploration
 
@@ -28,7 +28,7 @@ module Exploration
     def build_ruby_explorer
       agg = AggregationRelation.new
       dep = DependencyRelation.new
-      par = ParentRelation.new
+      par = GeneralizationRelation.new
       imp = ImplementsRelation.new
 
       class_entity = ClassEntity.new

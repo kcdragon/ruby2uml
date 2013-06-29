@@ -1,7 +1,7 @@
 require_relative 'relation'
 
 module Exploration
-  class ParentRelation < Relation
+  class GeneralizationRelation < Relation
     
     # Yields the parent of the +sexp+.
     def each sexp, context=nil, &block
