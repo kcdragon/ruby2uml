@@ -83,6 +83,10 @@ describe DotBuilder do
     def get_generalization_as_dot child, parent
       get_relation_as_dot(parent, child, "arrowtail=empty, dir=back")
     end
+    
+    def get_implements_as_dot impl, type
+      get_relation_as_dot(type, impl, "arrowtail=empty, dir=back, style=dashed")
+    end
 
     def get_aggregation_as_dot aggregator, aggregate
       get_relation_as_dot(aggregator, aggregate, "arrowtail=odiamond, constraint=false, dir=back")
@@ -98,6 +102,14 @@ describe DotBuilder do
       subject.build_entity foo
       subject.build_entity bar
       expect(subject.build_relation(foo, :generalization, bar)).to eq get_generalization_as_dot(1, 2)
+    end
+
+    it "builds relationship for implementation between class and module" do
+      foo = Graph::Vertex.new 'Foo', :module
+      bar = Graph::Vertex.new 'Bar', :class
+      subject.build_entity bar
+      subject.build_entity foo
+      expect(subject.build_relation(bar, :implements, foo)).to eq get_implements_as_dot(1, 2)
     end
 
     it "builds relationship for aggregation between classes" do

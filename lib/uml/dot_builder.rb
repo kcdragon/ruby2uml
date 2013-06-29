@@ -22,6 +22,9 @@ class DotBuilder
     @edge_mappings[:generalization] = lambda do |child, parent|
       return "#{parent}->#{child}[arrowtail=empty, dir=back]"
     end
+    @edge_mappings[:implements] = lambda do |impl, type|
+      return "#{type}->#{impl}[arrowtail=empty, dir=back, style=dashed]"
+    end
     @edge_mappings[:aggregation] = lambda do |aggregator, aggregate|
       return "#{aggregator}->#{aggregate}[arrowtail=odiamond, constraint=false, dir=back]"
     end
