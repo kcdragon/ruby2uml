@@ -1,1 +1,6 @@
 delimiter: "::"
+exclude:
+  - Array
+  - Hash
+  - Set
+  - String

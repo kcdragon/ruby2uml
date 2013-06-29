@@ -27,6 +27,9 @@ describe UmlBuilder do
       it "fails because build_entity is not implemented" do
         impl = Class.new do
           include UmlBuilder
+          def initialize config={}
+            super(config)
+          end
           def build_relation(vertex, edge, o_vertex); ''; end
         end
         expect { impl.new.build_uml(graph) }.to raise_error
@@ -34,6 +37,9 @@ describe UmlBuilder do
 
       it "fails because build_relation is ont implemented" do        impl = Class.new do
           include UmlBuilder
+          def initialize config={}
+            super(config)
+          end
           def build_entity(vertex); ''; end
         end
         expect { impl.new.build_uml(graph) }.to raise_error
@@ -44,6 +50,9 @@ describe UmlBuilder do
       it "succeeds because build_entity and build_relation are implemented" do
         impl = Class.new do
           include UmlBuilder
+          def initialize config={}
+            super(config)
+          end
           def build_entity(vertex); ''; end
           def build_relation(vertex, edge, o_vertex); ''; end
         end
@@ -53,6 +62,9 @@ describe UmlBuilder do
       it "builds all entities" do
         impl = Class.new do
           include UmlBuilder
+          def initialize config={}
+            super(config)
+          end
           def build_entity(vertex)
             vertex.fully_qualified_name('::') + "\n"
           end
@@ -65,6 +77,9 @@ describe UmlBuilder do
       it "builds all relations" do
         impl = Class.new do
           include UmlBuilder
+          def initialize config={}
+            super(config)
+          end
           def build_entity(vertex); ''; end
           def build_relation(vertex, edge, o_vertex)
             get_name = lambda do |v|
@@ -80,6 +95,9 @@ describe UmlBuilder do
       it "calls build_header when implemented" do
         impl = Class.new do
           include UmlBuilder
+          def initialize config={}
+            super(config)
+          end
           def build_header; ''; end
           def build_entity(vertex); ''; end
           def build_relation(vertex, edge, o_vertex); ''; end
@@ -92,6 +110,9 @@ describe UmlBuilder do
       it "calls build_footer when implemented" do
         impl = Class.new do
           include UmlBuilder
+          def initialize config={}
+            super(config)
+          end
           def build_entity(vertex); ''; end
           def build_relation(vertex, edge, o_vertex); ''; end
           def build_footer; ''; end
@@ -99,6 +120,26 @@ describe UmlBuilder do
         builder = impl.new
         builder.should_receive(:build_footer).and_return('')
         builder.build_uml(graph)
+      end
+      
+      it "excludes entity specified in config" do
+        impl = Class.new do
+          include UmlBuilder
+          def initialize config
+            super(config)
+          end
+          def build_entity(vertex); ''; end
+          def build_relation(vertex, edge, o_vertex); ''; end
+          def build_footer; ''; end
+        end
+        builder = impl.new({ 'delimiter' => '::', 'exclude' => ['Array'] })
+
+        g = Graph::Digraph.new
+        v = Graph::Vertex.new 'Array', :class
+        g.add_vertex v
+        
+        builder.should_not_receive(:build_entity)
+        builder.build_uml(g)
       end
     end
   end

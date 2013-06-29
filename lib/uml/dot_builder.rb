@@ -4,7 +4,7 @@ class DotBuilder
   include UmlBuilder
 
   def initialize config={}, dot_config={}
-    @config = config
+    super(config)
     @dot_config = dot_config
 
     @id_counter = 0
