@@ -7,6 +7,9 @@ require_relative 'graph_generator'
 require_relative 'sexp_factory'
 require_relative 'uml/dot_builder'
 
+# TODO ignore built-in classes (Hash, Array, Set, etc.)
+# could specify built-n classes in the config file. Still want to have these in the graph since this will help with one-to-many relationships
+
 config = YAML.load_file 'config/config.yml'
 dot_config = YAML.load_file 'config/dot.yml'
 
@@ -43,8 +46,6 @@ traverser = DirectoryTraverser.new explore_file
 generator = GraphGenerator.new
 explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
 traverser.process(*paths) do |file, sexp|
-  require 'pp'
-  pp sexp
   generator.process_sexp explorer, sexp
 end
 
