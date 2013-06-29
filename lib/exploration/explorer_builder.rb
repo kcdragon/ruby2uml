@@ -4,7 +4,7 @@ require_relative 'module_entity'
 require_relative 'root_entity'
 require_relative 'aggregation_relation'
 require_relative 'dependency_relation'
-#require_relative 'implements_relation'
+require_relative 'implements_relation'
 require_relative 'parent_relation'
 
 module Exploration
@@ -21,21 +21,26 @@ module Exploration
     #   * Generalization relationships
     #   * Aggregation relationships
     #   * Dependency relationships
+    #   * Implementation relationships
     # * Modules
     #   * Dependency relationships
+    #   * Implementation relationships
     def build_ruby_explorer
       agg = AggregationRelation.new
       dep = DependencyRelation.new
       par = ParentRelation.new
+      imp = ImplementsRelation.new
 
       class_entity = ClassEntity.new
       class_entity.add_explorer agg
       class_entity.add_explorer dep
       class_entity.add_explorer par
+      class_entity.add_explorer imp
       module_entity = ModuleEntity.new
       module_entity.add_explorer module_entity
       module_entity.add_explorer class_entity
       module_entity.add_explorer dep
+      module_entity.add_explorer imp
 
       block_entity = BlockEntity.new
       block_entity.add_explorer module_entity
