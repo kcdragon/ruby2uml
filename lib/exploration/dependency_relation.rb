@@ -5,12 +5,14 @@ module Exploration
 
     # Yields dependency relationships in +sexp+
     def get_method_explorers context, &block
-      yielded = []
+      already_explored = []
       {
         [:call] => lambda do |sexp| # search for call statements
           call_body = sexp.rest
-          explore_sexp_with_namespace call_body, :dependency, context, yielded, &block
-          explore_sexp_without_namespace call_body, :dependency, context, yielded, &block # by exploring :colon2 first, we won't pick up any :const that was inside a :colon2
+
+          # by exploring :colon2 first, we won't pick up any :const that was inside a :colon2
+          explore_entity_sexp :colon2, sexp, :dependency, context, already_explored, &block
+          explore_entity_sexp :const, sexp, :dependency, context, already_explored, &block
         end
       }
     end

@@ -6,12 +6,13 @@ module Exploration
 
     # Yields aggregation relationships in +sexp+
     def get_method_explorers context, &block
-      yielded = []
+      already_explored = []
       {
         [:iasgn, :cvasgn] => lambda do |sexp| # search inside instance and class assignment variables
           rhs = sexp.rest.rest # right-hand-side of assignment
-          explore_sexp_with_namespace rhs, :aggregation, context, yielded, &block
-          explore_sexp_without_namespace rhs, :aggregation, context, yielded, &block # by exploring :colon2 first, we won't pick up any :const that was inside a :colon2
+          # by exploring :colon2 first, we won't pick up any :const that was inside a :colon2
+          explore_entity_sexp :colon2, sexp, :aggregation, context, already_explored, &block
+          explore_entity_sexp :const, sexp, :aggregation, context, already_explored, &block
         end
       }
     end

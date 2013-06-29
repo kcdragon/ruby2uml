@@ -3,31 +3,35 @@ require_relative 'explorer'
 module Exploration
   class Relation < Explorer
 
-    def explore_sexp_with_namespace sexp, type, context, already_explored, &block
-      sexp.each_of_type(:colon2) do |namespace_sexp|
-        if !already_explored.include?(namespace_sexp)
-          name = namespace_sexp.rest.rest.head.to_s # name of the dependent namespace
-          namespace, explored = get_namespace namespace_sexp
-
-          block.call context, type, { name: name, type: :class, namespace: namespace }
-
-          already_explored << namespace_sexp
-          already_explored.concat explored # do not want to explore anything the was encountered in the namespace, if this was not done, there would be multiple yields for the same class
-          # i.e. Foo::Bar::Baz,
-          #           Bar::Baz, and
-          #                Baz
+    def explore_entity_sexp type, sexp, relationship, context, already_explored, &block
+      sexp.each_of_type(type) do |node|
+        if !already_explored.include?(node)
+          name, namespace, explored = get_name_and_namespace node
+          block.call context, relationship, { name: name, type: :class, namespace: namespace }
+          already_explored.concat explored
         end
       end
     end
 
-    def explore_sexp_without_namespace sexp, type, context, already_explored, &block
-      sexp.each_of_type(:const) do |node|
-        if !already_explored.include?(node)
-          name = node.rest.head.to_s # name of the dependent class
-          block.call context, type, { name: name, type: :class, namespace: [] }
-          already_explored << node
-        end
-      end
+    # Extracts name and namespace of the Sexp object.
+    #
+    # [params] - sexp is a Sexp object
+    #
+    # [precondition] - sexp is of the form: s(:colon2, s(:colon2 ..., s(:const, FirstNamespace), SecondNamespace, ..., ClassName).
+    #                - :colon2 sexp's are optional but there must be a :const
+    #
+    # [return] - name as String
+    #          - namespace as Array of String objects
+    #          - explored Sexp objects as an Array
+    def get_name_and_namespace sexp
+      name = if sexp.first == :colon2
+               sexp.rest.rest.first.to_s
+             else
+               sexp.rest.first.to_s
+             end
+      namespace, explored = get_namespace sexp
+      explored << sexp
+      return name, namespace, explored
     end
 
     # Extracts the namespace from the Sexp object.
