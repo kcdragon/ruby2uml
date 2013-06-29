@@ -1,3 +1,4 @@
+require_relative '../sexp_ext'
 require_relative 'relation'
 
 module Exploration
