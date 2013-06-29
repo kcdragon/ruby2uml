@@ -14,4 +14,6 @@ describe "Class Variables" do
     foo.add_edge Graph::Edge.new(:dependency), bar # TODO aggregation is also a dependency, might want to fix this by only making this aggregation
     expect(graph.each.to_a).to match_array [foo, bar]
   end
+
+  it "generates single class with one to many class variable"
 end

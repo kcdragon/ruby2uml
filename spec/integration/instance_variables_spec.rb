@@ -16,4 +16,6 @@ describe "Instance Variables" do
       expect(graph.each.to_a).to match_array [foo, bar]
     end
   end
+
+  it "generates single class with one to many instance variable"
 end
