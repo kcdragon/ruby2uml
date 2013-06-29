@@ -8,7 +8,7 @@ module Exploration
       @explorers = Array.new
     end
     
-    # exp is Explorable
+    # exp is an Explorer object
     def add_explorer exp
       @explorers << exp
     end
@@ -47,8 +47,12 @@ module Exploration
       namespace = get_namespace context
       new_context = { name: name, namespace: namespace, type: type }
       block.call new_context
-      @explorers.each do |rel|
-        rel.each sexp, new_context, &block
+      explore sexp, new_context, &block
+    end
+
+    def explore sexp, context, &block
+      @explorers.each do |exp|
+        exp.each sexp, context, &block
       end
     end
 
