@@ -5,6 +5,5 @@ Usage: ruby lib/main.rb file directory ...
 TODO:
 one-to-many aggregation and dependency
 include and extend relationships
-exclusion of built-in Ruby classes
 more advanced class and module resolution
 convert project to gem
