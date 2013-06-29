@@ -8,3 +8,4 @@ extend relationships
 more advanced class and module resolution
 convert project to gem
 group classes and module in packages based on modules
+include/exclude flag for modules/classes with no dependencies
