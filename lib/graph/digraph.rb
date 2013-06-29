@@ -9,11 +9,11 @@ module Graph
     end
 
     # Returns an Array of Vertices that match the name, namespace and path.
-    def find_vertex name, namespace=nil, path=nil # REFACTOR consider changing this to a Vertex object
+    def find_vertex name, namespace=nil, paths=nil # REFACTOR consider changing this to a Vertex object
       @vertices.select do |v|
         v.name == name &&
           (namespace.nil? || v.namespace.eql?(namespace)) &&
-          (path.nil? || v.paths.include?(path))
+          (paths.nil? || (paths - v.paths).empty?)
       end
     end
 
