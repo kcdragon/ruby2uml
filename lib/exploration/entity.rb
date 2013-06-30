@@ -1,4 +1,3 @@
-require_relative '../sexp_ext'
 require_relative 'explorer'
 
 module Exploration
@@ -32,6 +31,7 @@ module Exploration
       else
         sexp.each_sexp do |sub_sexp|
           yield_entity sub_sexp, context, type, &block if sub_sexp.sexp_type == type
+        end
       end
     end
 
