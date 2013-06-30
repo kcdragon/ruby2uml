@@ -3,16 +3,6 @@ require_relative 'explorer'
 module Exploration
   class Relation < Explorer
 
-    def explore_entity_sexp type, sexp, relationship, context, already_explored, &block
-      sexp.each_of_type(type) do |node|
-        if !already_explored.include?(node)
-          name, namespace, explored = get_name_and_namespace node
-          block.call context, relationship, { name: name, type: :class, namespace: namespace }
-          already_explored.concat explored
-        end
-      end
-    end
-
     # Extracts name and namespace of the Sexp object.
     #
     # [params] - sexp is a Sexp object
