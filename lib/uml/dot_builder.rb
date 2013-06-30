@@ -3,6 +3,16 @@ require_relative 'uml_builder'
 class DotBuilder
   include UmlBuilder
 
+  def node_header v
+    id = @vertex_to_id[v]
+    name = v.fully_qualified_name(@config["delimiter"])
+    "#{id}[label = \"{#{name}|"
+  end
+
+  def node_footer v
+    "}\"]\n"
+  end
+
   def initialize config={}, dot_config={}
     super(config)
     @dot_config = dot_config
@@ -10,15 +20,19 @@ class DotBuilder
     @id_counter = 0
     @vertex_to_id = Hash.new
 
-    @vertex_mappings = Hash.new
+    @vertex_mappings = Hash.new lambda { |*| '' }
     @vertex_mappings[:module] = lambda do |m|
-      return "..."
+      node_header(m) +
+        "..." +
+        node_footer(m)
     end
     @vertex_mappings[:class] = lambda do |c|
-      return "...|..."
+      node_header(c) +
+        "...|..." +
+        node_footer(c)
     end
 
-    @edge_mappings = Hash.new
+    @edge_mappings = Hash.new lambda { |*| '' }
     @edge_mappings[:generalization] = lambda do |child, parent|
       return "#{parent}->#{child}[arrowtail=empty, dir=back]"
     end
@@ -53,10 +67,7 @@ class DotBuilder
   def build_entity vertex
     @id_counter += 1
     @vertex_to_id[vertex] = @id_counter
-    name = vertex.fully_qualified_name(@config["delimiter"])
-    "#{@id_counter}[label = \"{#{name}|" +
-      @vertex_mappings[vertex.type].call(vertex) +
-      "}\"]\n"
+    @vertex_mappings[vertex.type].call(vertex)
   end
 
   def build_relation vertex, edge, o_vertex
