@@ -4,7 +4,7 @@ require_relative 'relation'
 module Exploration
   class ImplementsRelation < Relation
     def each sexp, context=nil, &block
-      sexp.each_child do |child|
+      sexp.each_sexp do |child|
         # check if child is a call to include
         if child.first == :call && child.rest.rest.first == :include
           node = child.rest.rest.rest.first

@@ -21,7 +21,7 @@ module Exploration
     #          - context is a Hash with attributes describing the parent Sexp
     #          - types_to_search is a Hash of sexp types mapped to Procs
     def each_of_type type, sexp, context, types_to_search, &block
-      sexp.each_child do |sub_sexp|
+      sexp.each_sexp do |sub_sexp|
         if sub_sexp.first == type
           method_node = sub_sexp
           method_body = method_node.rest.rest.rest

@@ -7,7 +7,7 @@ module Exploration
   class BlockEntity < Entity
     def each sexp, context=nil, &block
       if sexp.first == :block
-        sexp.each_child do |sub_sexp|
+        sexp.each_sexp do |sub_sexp|
           explore sub_sexp, context, &block
         end
       end

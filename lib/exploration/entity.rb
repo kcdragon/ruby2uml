@@ -30,12 +30,8 @@ module Exploration
 
       # otherwise, explore the children of the sexp
       else
-        sexp.each_child do |sub_sexp|
-          if sub_sexp.head == type
-            entity_node = sub_sexp
-            yield_entity entity_node, context, type, &block
-          end
-        end
+        sexp.each_sexp do |sub_sexp|
+          yield_entity sub_sexp, context, type, &block if sub_sexp.sexp_type == type
       end
     end
 
