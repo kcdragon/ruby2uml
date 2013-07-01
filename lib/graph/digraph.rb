@@ -13,7 +13,7 @@ module Graph
       @vertices.select do |v|
         v.name == name &&
           (namespace.nil? || v.namespace.eql?(namespace)) &&
-          (paths.nil? || (paths - v.paths).empty?)
+          (paths.nil? || (paths - v.paths).empty?) # checks to see if paths is a subset of v.paths
       end
     end
 
