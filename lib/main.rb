@@ -41,7 +41,7 @@ end
 paths = ARGV
 traverser = DirectoryTraverser.new explore_file
 generator = GraphGenerator.new
-explorer = Exploration::ExplorerBuilder.instance.build_ruby_explorer
+explorer = Exploration::ExplorerBuilder.new.build_ruby_explorer
 traverser.process(*paths) do |file, sexp|
   generator.process_sexp explorer, sexp
 end

@@ -12,9 +12,6 @@ module Exploration
 
   # All build methods must return an object that implements Explorable.
   class ExplorerBuilder
-    def self.instance
-      @@instance ||= ExplorerBuilder.new
-    end
     
     # Builds Explorer for Ruby programs. This explorer picks up:
     #
