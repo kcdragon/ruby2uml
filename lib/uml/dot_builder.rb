@@ -1,15 +1,16 @@
 require_relative 'uml_builder'
 
+# DotBuilder constructs a String in .dot format from a Digraph to be used with the Graphviz Dot program.
 class DotBuilder
   include UmlBuilder
 
-  def node_header v
-    id = @vertex_to_id[v]
-    name = v.fully_qualified_name(@config["delimiter"])
+  def node_beginning vertex
+    id = @vertex_to_id[vertex]
+    name = vertex.fully_qualified_name(@config["delimiter"])
     "#{id}[label = \"{#{name}|"
   end
 
-  def node_footer v
+  def node_ending
     "}\"]\n"
   end
 
@@ -21,15 +22,15 @@ class DotBuilder
     @vertex_to_id = Hash.new
 
     @vertex_mappings = Hash.new lambda { |*| '' }
-    @vertex_mappings[:module] = lambda do |m|
-      node_header(m) +
+    @vertex_mappings[:module] = lambda do |moduel|
+      node_beginning(moduel) +
         "..." +
-        node_footer(m)
+        node_ending
     end
-    @vertex_mappings[:class] = lambda do |c|
-      node_header(c) +
+    @vertex_mappings[:class] = lambda do |klass|
+      node_beginning(klass) +
         "...|..." +
-        node_footer(c)
+        node_ending
     end
 
     @edge_mappings = Hash.new lambda { |*| '' }
@@ -48,20 +49,17 @@ class DotBuilder
   end
 
   def build_header
-    top = "digraph hierarchy {\n"
-    size = ""
-    size = "size=#{@dot_config["size"]}\n" if @dot_config.has_key? "size"
+    header = "digraph hierarchy {\n"
+    header << "size=#{@dot_config["size"]}\n" if @dot_config.has_key? "size"
     if @dot_config.has_key? "node"
-      node = "node["
-      @dot_config["node"].each do |k, v|
-        node << "#{k}=#{v}, "
+      header << "node["
+      @dot_config["node"].each do |setting_name, setting_value|
+        header << "#{setting_name}=#{setting_value}, "
       end
-      node.chomp!(", ")
-      node << "]\n"
-    else
-      node = ""
+      header.chomp!(", ")
+      header << "]\n"
     end
-    top + size + node
+    header
   end
 
   def build_entity vertex
