@@ -35,7 +35,7 @@ end
 explore_file = lambda do |file_name|
   file = File.open file_name, 'rb' # open file as binary to read into one string
   program = file.read
-  SexpFactory.instance.get_sexp program, 'rb'
+  SexpFactory.new.get_sexp program, 'rb'
 end
 
 paths = ARGV

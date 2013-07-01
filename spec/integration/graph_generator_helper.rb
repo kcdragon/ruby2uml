@@ -4,7 +4,7 @@ require_relative '../../lib/sexp_factory'
 
 module GraphGeneratorHelper
   def generate_graph *programs
-    sf = SexpFactory.instance
+    sf = SexpFactory.new
     explorer = Exploration::ExplorerBuilder.new.build_ruby_explorer
     generator = GraphGenerator.new
     programs.each do |p|

@@ -7,6 +7,6 @@ module SexpHelper
 
 private
   def sf
-    SexpFactory.instance
+    SexpFactory.new
   end
 end

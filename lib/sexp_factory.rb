@@ -2,10 +2,6 @@ require 'ruby_parser'
 
 # SexpFactory generates a Sexp object from a given file and for a given type. The only supported type so far is Ruby (.rb) files.
 class SexpFactory
-  
-  def self.instance
-    @@instance ||= SexpFactory.new
-  end
 
   def initialize
     @ext_map = Hash.new
