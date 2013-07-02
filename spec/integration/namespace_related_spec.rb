@@ -8,11 +8,13 @@ describe "Classes and Modules w/ Namespaces" do
   let(:foo) { Graph::Vertex.new('Foo', :module) }
   let(:bar) { Graph::Vertex.new('Bar', :class, ['Foo']) }
   let(:baz) { Graph::Vertex.new('Baz', :class) }
+  let(:hello) { Graph::Vertex.new('hello', :method) }
 
   it "generates single class with local variable dependency" do
     graph = generate_graph "module Foo; class Bar; def hello; return Baz.new; end; end; end"
     bar.add_edge Graph::Edge.new(:dependency), baz
-    expect(graph.each.to_a).to match_array [foo, bar, baz]
+    bar.add_edge Graph::Edge.new(:defines), hello
+    expect(graph.each.to_a).to match_array [foo, bar, baz, hello]
   end
 
   it "generates a graph with class inside one module" do

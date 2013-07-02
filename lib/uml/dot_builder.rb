@@ -6,7 +6,7 @@ class DotBuilder
 
   def node_beginning vertex
     id = @vertex_to_id[vertex]
-    name = vertex.fully_qualified_name(@config["delimiter"])
+    name = vertex.fully_qualified_name(@config["delimiter"]).chomp("?").chomp("!") # TODO find a better solution than removing question marks and bangs from methods
     "#{id}[label = \"{#{name}|"
   end
 
@@ -21,15 +21,21 @@ class DotBuilder
     @id_counter = 0
     @vertex_to_id = Hash.new
 
+    def get_methods vertex
+      methods = vertex.get_edge(Graph::Edge.new(:defines))
+      return '...' if methods.empty?
+      methods.to_a.map(&:name).join("|").chomp("|") # TODO need to figure out how to add new lines correctly
+    end
+
     @vertex_mappings = Hash.new lambda { |*| '' }
     @vertex_mappings[:module] = lambda do |moduel|
       node_beginning(moduel) +
-        "..." +
+        get_methods(moduel) +
         node_ending
     end
     @vertex_mappings[:class] = lambda do |klass|
       node_beginning(klass) +
-        "...|..." +
+        "...|" + get_methods(klass) +
         node_ending
     end
 

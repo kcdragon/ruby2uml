@@ -49,7 +49,7 @@ module Graph
       self.class.eql?(obj.class) &&
         self.name.eql?(obj.name) &&
         self.namespace.eql?(obj.namespace) &&
-        self.each.to_a.eql?(obj.each.to_a) &&
+        Set.new(self.each.to_a).eql?(Set.new(obj.each.to_a)) &&
         self.paths.eql?(obj.paths) &&
         self.type.eql?(obj.type)
     end
