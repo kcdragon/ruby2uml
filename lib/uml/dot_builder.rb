@@ -22,7 +22,7 @@ class DotBuilder
     @vertex_to_id = Hash.new
 
     def get_methods vertex
-      methods = vertex.get_edge(Graph::Edge.new(:defines))
+      methods = vertex.get_edge(Edge.new(:defines))
       return '...' if methods.empty?
       methods.to_a.map(&:name).join('\n').chomp('\n') # TODO need to figure out how to add new lines correctly
     end

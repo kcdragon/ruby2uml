@@ -2,10 +2,10 @@ require_relative '../../lib/graph/digraph'
 require_relative '../../lib/graph/namespace'
 require_relative '../../lib/graph/vertex'
 
-describe Graph::Digraph do
-  let(:one) { Graph::Vertex.new 'one', :class }
-  let(:two) { Graph::Vertex.new 'two', :class }
-  let(:three) { Graph::Vertex.new 'three', :class }
+describe Digraph do
+  let(:one) { Vertex.new 'one', :class }
+  let(:two) { Vertex.new 'two', :class }
+  let(:three) { Vertex.new 'three', :class }
 
   it { should respond_to :find_vertex }
   it { should respond_to :has_vertex? }
@@ -35,12 +35,12 @@ describe Graph::Digraph do
   end
 
   describe "finds the vertices that match" do
-    let(:foo_bar) { Graph::Vertex.new 'Bar', :class, ['Foo'] }
-    let(:bar) { Graph::Vertex.new 'Bar', :class }
-    let(:hello_world) { Graph::Vertex.new 'World', :class, ['Hello'] }
-    let(:baz_with_path) { Graph::Vertex.new('Baz', :class).tap { |me| me.paths = ['path.rb'] } }
+    let(:foo_bar) { Vertex.new 'Bar', :class, ['Foo'] }
+    let(:bar) { Vertex.new 'Bar', :class }
+    let(:hello_world) { Vertex.new 'World', :class, ['Hello'] }
+    let(:baz_with_path) { Vertex.new('Baz', :class).tap { |me| me.paths = ['path.rb'] } }
     let(:graph) do
-      Graph::Digraph.new.tap do |g|
+      Digraph.new.tap do |g|
         g.add_vertex foo_bar
         g.add_vertex bar
         g.add_vertex hello_world
@@ -56,13 +56,13 @@ describe Graph::Digraph do
 
       it "not match when namespace is incorrect" do
         expect(
-               subject.find_vertex('Bar', Graph::Namespace.new(['Hello']))
+               subject.find_vertex('Bar', Namespace.new(['Hello']))
                ).to be_empty
       end
 
       it "not match when path is incorrect" do
         expect(
-               subject.find_vertex('Bar', Graph::Namespace.new(['Foo']), ['path.rb'])
+               subject.find_vertex('Bar', Namespace.new(['Foo']), ['path.rb'])
                ).to be_empty
       end
     end
@@ -74,7 +74,7 @@ describe Graph::Digraph do
       
       it "matches one with namespace" do
         expect(
-               subject.find_vertex('World', Graph::Namespace.new(['Hello']))
+               subject.find_vertex('World', Namespace.new(['Hello']))
                ).to match_array [hello_world]
       end
 

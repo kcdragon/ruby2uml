@@ -8,15 +8,15 @@ describe "Resolve-related" do
     program1 = "class Foo; def say_hello; Hello.world; end; end"
     program2 = "module Bar; class Hello; end; end"
 
-    foo = Graph::Vertex.new 'Foo', :class
-    say_hello = Graph::Vertex.new 'say_hello', :method
-    hello = Graph::Vertex.new 'Hello', :class, ['Bar']
-    bar = Graph::Vertex.new 'Bar', :module
+    foo = Vertex.new 'Foo', :class
+    say_hello = Vertex.new 'say_hello', :method
+    hello = Vertex.new 'Hello', :class, ['Bar']
+    bar = Vertex.new 'Bar', :module
 
-    foo.add_edge Graph::Edge.new(:dependency), hello
-    foo.add_edge Graph::Edge.new(:defines), say_hello
+    foo.add_edge Edge.new(:dependency), hello
+    foo.add_edge Edge.new(:defines), say_hello
 
-    graph = Graph::Digraph.new
+    graph = Digraph.new
     graph.add_vertex foo
     graph.add_vertex say_hello
     graph.add_vertex hello

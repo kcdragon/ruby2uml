@@ -5,15 +5,15 @@ require_relative 'graph_generator_helper'
 describe "Classes and Modules w/ Namespaces" do
   include GraphGeneratorHelper
 
-  let(:foo) { Graph::Vertex.new('Foo', :module) }
-  let(:bar) { Graph::Vertex.new('Bar', :class, ['Foo']) }
-  let(:baz) { Graph::Vertex.new('Baz', :class) }
-  let(:hello) { Graph::Vertex.new('hello', :method) }
+  let(:foo) { Vertex.new('Foo', :module) }
+  let(:bar) { Vertex.new('Bar', :class, ['Foo']) }
+  let(:baz) { Vertex.new('Baz', :class) }
+  let(:hello) { Vertex.new('hello', :method) }
 
   it "generates single class with local variable dependency" do
     graph = generate_graph "module Foo; class Bar; def hello; return Baz.new; end; end; end"
-    bar.add_edge Graph::Edge.new(:dependency), baz
-    bar.add_edge Graph::Edge.new(:defines), hello
+    bar.add_edge Edge.new(:dependency), baz
+    bar.add_edge Edge.new(:defines), hello
     expect(graph.each.to_a).to match_array [foo, bar, baz, hello]
   end
 
@@ -27,8 +27,8 @@ describe "Classes and Modules w/ Namespaces" do
 
     graph = generate_graph program
 
-    foo = Graph::Vertex.new 'Foo', :module
-    bar = Graph::Vertex.new 'Bar', :class, ['Foo']
+    foo = Vertex.new 'Foo', :module
+    bar = Vertex.new 'Bar', :class, ['Foo']
 
     expect { |b| graph.each(&b) }.to yield_successive_args foo, bar
   end
@@ -44,9 +44,9 @@ describe "Classes and Modules w/ Namespaces" do
     EOS
     graph = generate_graph program
 
-    foo = Graph::Vertex.new 'Foo', :module
-    bar = Graph::Vertex.new 'Bar', :module, ['Foo']
-    hello = Graph::Vertex.new 'Hello', :class, ['Foo', 'Bar']
+    foo = Vertex.new 'Foo', :module
+    bar = Vertex.new 'Bar', :module, ['Foo']
+    hello = Vertex.new 'Hello', :class, ['Foo', 'Bar']
 
     expect { |b| graph.each(&b) }.to yield_successive_args foo, bar, hello
   end

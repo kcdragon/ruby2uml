@@ -38,8 +38,8 @@ describe DotBuilder do
       "#{id}[label = \"{#{namespace + name}|"+ content + "}\"]\n"
     end
 
-    let(:module_node) { Graph::Vertex.new 'ModuleNode', :module }
-    let(:class_node) { Graph::Vertex.new 'ClassNode', :class }
+    let(:module_node) { Vertex.new 'ModuleNode', :module }
+    let(:class_node) { Vertex.new 'ClassNode', :class }
 
     it "builds module entity" do
       expect(subject.build_entity(module_node)).to eq get_module_as_dot(1, module_node.name)
@@ -56,35 +56,35 @@ describe DotBuilder do
 
     it "builds module with namespace" do
       namespace = 'Ns'
-      module_node.namespace = Graph::Namespace.new [namespace]
+      module_node.namespace = Namespace.new [namespace]
       expect(subject.build_entity(module_node)).to eq get_module_as_dot(1, module_node.name, namespace + '::')
     end
 
     it "builds class with namespace" do
       namespace = 'Ns'
-      class_node.namespace = Graph::Namespace.new [namespace]
+      class_node.namespace = Namespace.new [namespace]
       expect(subject.build_entity(class_node)).to eq get_class_as_dot(1, class_node.name, namespace + '::')
     end
 
     it "builds module with one method" do
-      module_node.add_edge Graph::Edge.new(:defines), Graph::Vertex.new('get_foo', :method)
+      module_node.add_edge Edge.new(:defines), Vertex.new('get_foo', :method)
       expect(subject.build_entity(module_node)).to eq get_module_as_dot(1, module_node.name, '', 'get_foo')
     end
 
     it "builds module with multiple methods" do
-      module_node.add_edge Graph::Edge.new(:defines), Graph::Vertex.new('get_foo', :method)
-      module_node.add_edge Graph::Edge.new(:defines), Graph::Vertex.new('get_baz', :method)
+      module_node.add_edge Edge.new(:defines), Vertex.new('get_foo', :method)
+      module_node.add_edge Edge.new(:defines), Vertex.new('get_baz', :method)
       expect(subject.build_entity(module_node)).to eq get_module_as_dot(1, module_node.name, '', 'get_foo', 'get_baz')
     end
 
     it "builds class with one method" do
-      class_node.add_edge Graph::Edge.new(:defines), Graph::Vertex.new('get_foo', :method)
+      class_node.add_edge Edge.new(:defines), Vertex.new('get_foo', :method)
       expect(subject.build_entity(class_node)).to eq get_class_as_dot(1, class_node.name, '', 'get_foo')
     end
 
     it "builds class with mutliple methods" do
-      class_node.add_edge Graph::Edge.new(:defines), Graph::Vertex.new('get_foo', :method)
-      class_node.add_edge Graph::Edge.new(:defines), Graph::Vertex.new('get_baz', :method)
+      class_node.add_edge Edge.new(:defines), Vertex.new('get_foo', :method)
+      class_node.add_edge Edge.new(:defines), Vertex.new('get_baz', :method)
       expect(subject.build_entity(class_node)).to eq get_class_as_dot(1, class_node.name, '', 'get_foo', 'get_baz')
     end
   end
@@ -110,8 +110,8 @@ describe DotBuilder do
       get_relation_as_dot(vertex, depends_on, "dir=forward, style=dashed")
     end
 
-    let(:foo) { foo = Graph::Vertex.new 'Foo', :class }
-    let(:bar) { foo = Graph::Vertex.new 'Bar', :class }
+    let(:foo) { foo = Vertex.new 'Foo', :class }
+    let(:bar) { foo = Vertex.new 'Bar', :class }
 
     def build_entities
       subject.build_entity foo

@@ -5,8 +5,8 @@ require_relative 'graph_generator_helper'
 describe "Block Wrappers" do
   include GraphGeneratorHelper
 
-  let(:foo) { Graph::Vertex.new 'Foo', :class }
-  let(:bar) { Graph::Vertex.new 'Bar', :class }
+  let(:foo) { Vertex.new 'Foo', :class }
+  let(:bar) { Vertex.new 'Bar', :class }
 
   it "generates graph that begins with require statements" do
     program = "require 'set'; class Foo; end"

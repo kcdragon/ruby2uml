@@ -11,13 +11,13 @@ describe UmlBuilder do
   describe ".build_uml" do
 
     let(:graph) do
-      c = Graph::Vertex.new 'Class', :class, ['M']
-      m = Graph::Vertex.new 'Module', :module, ['N']
+      c = Vertex.new 'Class', :class, ['M']
+      m = Vertex.new 'Module', :module, ['N']
       
-      e = Graph::Edge.new :dependency
+      e = Edge.new :dependency
       m.add_edge e, c
 
-      graph = Graph::Digraph.new
+      graph = Digraph.new
       graph.add_vertex c
       graph.add_vertex m
       graph
@@ -134,8 +134,8 @@ describe UmlBuilder do
         end
         builder = impl.new({ 'delimiter' => '::', 'exclude' => ['Array'] })
 
-        g = Graph::Digraph.new
-        v = Graph::Vertex.new 'Array', :class
+        g = Digraph.new
+        v = Vertex.new 'Array', :class
         g.add_vertex v
         
         builder.should_not_receive(:build_entity)

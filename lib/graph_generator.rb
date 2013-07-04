@@ -10,7 +10,7 @@ class GraphGenerator
   attr_writer :resolve_strategy
 
   def initialize
-    @graph = Graph::Digraph.new
+    @graph = Digraph.new
     @resolve_strategy = Exploration::SimpleResolveStrategy.new
   end
 
@@ -53,10 +53,10 @@ private
   end
 
   def create_vertex name, namespace, type
-    Graph::Vertex.new name, type, namespace
+    Vertex.new name, type, namespace
   end
 
   def get_edge type
-    Graph::Edge.new type
+    Edge.new type
   end
 end

@@ -1,15 +1,15 @@
 require_relative '../../lib/graph/namespace'
 
-describe Graph::Namespace do
+describe Namespace do
   before :all do
-    @namespace = Graph::Namespace.new ['B', 'C']
+    @namespace = Namespace.new ['B', 'C']
   end
 
   subject { @namespace }
 
   context "namespace is included by other namespace" do
     before :all do
-      @other = Graph::Namespace.new ['A', 'B', 'C']
+      @other = Namespace.new ['A', 'B', 'C']
     end
 
     it "is included by" do
@@ -27,7 +27,7 @@ describe Graph::Namespace do
 
   context "namespace does include other namespace" do
     before :all do
-      @other = Graph::Namespace.new ['C']
+      @other = Namespace.new ['C']
     end
 
     it "is not included by" do
@@ -45,7 +45,7 @@ describe Graph::Namespace do
 
   context "namespace includes and is included by (i.e. same as) other namespace" do
     before :all do
-      @other = Graph::Namespace.new ['B', 'C']
+      @other = Namespace.new ['B', 'C']
     end
 
     it "is included by" do

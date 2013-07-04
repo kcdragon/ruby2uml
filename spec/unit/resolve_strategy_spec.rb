@@ -7,7 +7,7 @@ describe Exploration::ResolveStrategy do
   it { respond_to? :rereference_incoming_edges! }
 
   def create_vertex name, namespace=[], paths=[]
-    v = Graph::Vertex.new name, :class, namespace
+    v = Vertex.new name, :class, namespace
     v.paths = paths
     v
   end
@@ -15,8 +15,8 @@ describe Exploration::ResolveStrategy do
   let(:foo) { create_vertex 'Foo' }
   let(:m_foo) { create_vertex 'Foo', ['M'] }
   let(:bar) { create_vertex 'Bar' }
-  let(:edge) { Graph::Edge.new(:dependency) }
-  let(:edge2) { Graph::Edge.new(:generalization) }
+  let(:edge) { Edge.new(:dependency) }
+  let(:edge2) { Edge.new(:generalization) }
 
   describe ".merge_vertices" do
     it "merges different edges" do
