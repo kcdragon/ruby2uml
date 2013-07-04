@@ -3,6 +3,8 @@ Extract a UML diagram from Ruby code.
 Usage: ruby lib/main.rb file directory ...
 
 TODO:
+add arguments to methods
+add instance variables to classes
 one-to-many aggregation and dependency
 extend relationships
 more advanced class and module resolution
