@@ -25,12 +25,12 @@ describe DotBuilder do
   describe ".build_entity" do
     
     def get_module_as_dot id, name, namespace='', *methods
-      content = methods.empty? ? '...' : methods.join("|").chomp("|")
+      content = methods.empty? ? '...' : methods.join('\n').chomp('\n')
       get_entity_as_dot id, name, namespace, content
     end
 
     def get_class_as_dot id, name, namespace='', *methods
-      content = methods.empty? ? '...' : methods.join("|").chomp("|")
+      content = methods.empty? ? '...' : methods.join('\n').chomp('\n')
       get_entity_as_dot id, name, namespace, '...|' + content
     end
 
