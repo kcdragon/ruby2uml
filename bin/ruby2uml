@@ -10,8 +10,8 @@ require_relative '../lib/sexp_factory'
 require_relative '../lib/uml/dot_builder'
 
 def run
-  config = YAML.load_file 'config/config.yml'
-  dot_config = YAML.load_file 'config/dot.yml'
+  config = YAML.load_file '../config/config.yml'
+  dot_config = YAML.load_file '../config/dot.yml'
 
   options = {}
   optparse = OptionParser.new do|opts|
