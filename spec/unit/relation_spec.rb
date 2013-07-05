@@ -1,8 +1,8 @@
 require 'sexp'
+require 'spec_helper'
+require 'exploration/relation'
 
-require_relative '../../lib/exploration/relation'
-
-describe Exploration::Relation do
+describe Relation do
 
   describe ".get_namespace" do
     context "when there is no namespace" do

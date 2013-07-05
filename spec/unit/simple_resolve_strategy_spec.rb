@@ -1,8 +1,9 @@
-require_relative '../../lib/exploration/resolve/simple_resolve_strategy'
-require_relative '../../lib/graph/digraph'
-require_relative '../../lib/graph/vertex'
+require 'spec_helper'
+require 'exploration/resolve/simple_resolve_strategy'
+require 'graph/digraph'
+require 'graph/vertex'
 
-describe Exploration::SimpleResolveStrategy do
+describe SimpleResolveStrategy do
   let(:vertex) { Vertex.new 'Foo', :class, ['M'] }
   
   it { respond_to :is_same? }

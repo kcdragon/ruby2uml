@@ -1,8 +1,9 @@
-require_relative '../../lib/graph/digraph'
-require_relative '../../lib/graph/edge'
-require_relative '../../lib/graph/namespace'
-require_relative '../../lib/graph/vertex'
-require_relative '../../lib/uml/uml_builder'
+require 'spec_helper'
+require 'graph/digraph'
+require 'graph/edge'
+require 'graph/namespace'
+require 'graph/vertex'
+require 'uml/uml_builder'
 
 describe UmlBuilder do
   

@@ -1,8 +1,8 @@
-require_relative '../../lib/sexp_factory'
-require_relative '../../lib/exploration/aggregation_relation'
+require 'spec_helper'
+require 'exploration/aggregation_relation'
 require_relative 'sexp_helper'
 
-describe Exploration::AggregationRelation do
+describe AggregationRelation do
   include SexpHelper
   
   context "when there is an aggregation" do

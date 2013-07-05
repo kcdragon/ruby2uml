@@ -1,4 +1,5 @@
-require_relative '../../lib/graph/vertex'
+require 'spec_helper'
+require 'graph/vertex'
 require_relative 'graph_generator_helper'
 
 # When a program has multiple elements on the top level (i.e. two classes not nested in a module, require statements followed by a class), the whole program is wrapped in a block when a Sexp is generated. These specs test programs that have a block wrapping the whole program.

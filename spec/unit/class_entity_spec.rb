@@ -1,16 +1,16 @@
-require_relative '../../lib/exploration/class_entity'
-require_relative '../../lib/exploration/method_entity'
-require_relative '../../lib/exploration/dependency_relation'
-require_relative '../../lib/sexp_factory'
+require 'spec_helper'
+require 'exploration/class_entity'
+require 'exploration/method_entity'
+require 'exploration/dependency_relation'
 require_relative 'sexp_helper'
 
-describe Exploration::ClassEntity do
+describe ClassEntity do
   include SexpHelper
 
   let(:class_entity) do
-    class_entity = Exploration::ClassEntity.new
-    method_explorer = Exploration::MethodEntity.new
-    method_explorer.add_explorer Exploration::DependencyRelation.new
+    class_entity = ClassEntity.new
+    method_explorer = MethodEntity.new
+    method_explorer.add_explorer DependencyRelation.new
     class_entity.add_explorer method_explorer
     class_entity
   end

@@ -1,8 +1,9 @@
-require_relative '../../lib/exploration/resolve/resolve_strategy'
-require_relative '../../lib/graph/edge'
-require_relative '../../lib/graph/vertex'
+require 'spec_helper'
+require 'exploration/resolve/resolve_strategy'
+require 'graph/edge'
+require 'graph/vertex'
 
-describe Exploration::ResolveStrategy do
+describe ResolveStrategy do
   it { respond_to? :merge_vertices }
   it { respond_to? :rereference_incoming_edges! }
 

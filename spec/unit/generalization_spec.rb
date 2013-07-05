@@ -1,7 +1,8 @@
-require_relative '../../lib/exploration/generalization_relation'
+require 'spec_helper'
+require 'exploration/generalization_relation'
 require_relative 'sexp_helper'
 
-describe Exploration::GeneralizationRelation do
+describe GeneralizationRelation do
   include SexpHelper
 
   context "when there is a generalization" do

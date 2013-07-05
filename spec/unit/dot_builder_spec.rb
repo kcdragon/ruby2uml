@@ -1,6 +1,6 @@
-require_relative '../../lib/graph/edge'
-require_relative '../../lib/graph/vertex'
-require_relative '../../lib/uml/dot_builder'
+require 'graph/edge'
+require 'graph/vertex'
+require 'uml/dot_builder'
 
 describe DotBuilder do
 

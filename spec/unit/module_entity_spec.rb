@@ -1,18 +1,18 @@
-require_relative '../../lib/sexp_factory'
-require_relative '../../lib/graph/vertex'
-require_relative '../../lib/exploration/class_entity'
-require_relative '../../lib/exploration/method_entity'
-require_relative '../../lib/exploration/module_entity'
+require 'spec_helper'
+require 'graph/vertex'
+require 'exploration/class_entity'
+require 'exploration/method_entity'
+require 'exploration/module_entity'
 require_relative 'sexp_helper'
 
-describe Exploration::ModuleEntity do
+describe ModuleEntity do
   include SexpHelper
 
   let(:foo) { { name: 'Foo', type: :module, namespace: [] } }
   
   it "contains a class" do
     program = "module Foo; class Bar; end; end"
-    subject.add_explorer Exploration::ClassEntity.new
+    subject.add_explorer ClassEntity.new
     expect do |b|
       subject.each(get_sexp(program), nil, &b)
     end.to yield_successive_args(foo,
@@ -26,7 +26,7 @@ describe Exploration::ModuleEntity do
 
   it "contains a method" do
     program = "module Foo; def get_bar; end; end"
-    subject.add_explorer Exploration::MethodEntity.new
+    subject.add_explorer MethodEntity.new
     expect do |b|
       subject.each(get_sexp(program), nil, &b)
     end.to yield_successive_args(foo,

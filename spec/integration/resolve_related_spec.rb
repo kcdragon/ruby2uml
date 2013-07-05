@@ -1,4 +1,5 @@
-require_relative '../../lib/graph/vertex'
+require 'spec_helper'
+require 'graph/vertex'
 require_relative 'graph_generator_helper'
 
 describe "Resolve-related" do

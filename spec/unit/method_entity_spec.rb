@@ -1,10 +1,10 @@
-require_relative '../../lib/exploration/method_entity'
-require_relative '../../lib/exploration/dependency_relation'
-require_relative '../../lib/exploration/aggregation_relation'
-require_relative '../../lib/sexp_factory'
+require 'spec_helper'
+require 'exploration/method_entity'
+require 'exploration/dependency_relation'
+require 'exploration/aggregation_relation'
 require_relative 'sexp_helper'
 
-describe Exploration::MethodEntity do
+describe MethodEntity do
   include SexpHelper
 
   let(:foo) { { name: 'Foo', type: :class, namespace: [] } }
@@ -12,13 +12,13 @@ describe Exploration::MethodEntity do
   let(:hello) { { name: 'Hello', type: :class, namespace: [] } }
 
   def get_method_entity relation
-    method_entity = Exploration::MethodEntity.new.tap do |me|
+    method_entity = MethodEntity.new.tap do |me|
       me.add_explorer relation
     end
   end
 
   context "dependency" do
-    let(:method_entity) { get_method_entity Exploration::DependencyRelation.new }
+    let(:method_entity) { get_method_entity DependencyRelation.new }
     subject { method_entity }
     
     it "has a dependency" do
@@ -35,7 +35,7 @@ describe Exploration::MethodEntity do
   end
 
   context "aggregation" do
-    let(:method_entity) { get_method_entity Exploration::AggregationRelation.new }
+    let(:method_entity) { get_method_entity AggregationRelation.new }
     subject { method_entity }
 
     it "has an aggregation" do

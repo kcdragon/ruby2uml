@@ -1,6 +1,7 @@
-require_relative '../../lib/graph/digraph'
-require_relative '../../lib/graph/namespace'
-require_relative '../../lib/graph/vertex'
+require 'spec_helper'
+require 'graph/digraph'
+require 'graph/namespace'
+require 'graph/vertex'
 
 describe Digraph do
   let(:one) { Vertex.new 'one', :class }

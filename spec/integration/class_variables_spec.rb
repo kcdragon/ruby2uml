@@ -1,5 +1,6 @@
-require_relative '../../lib/graph/edge'
-require_relative '../../lib/graph/vertex'
+require 'spec_helper'
+require 'graph/edge'
+require 'graph/vertex'
 require_relative 'graph_generator_helper'
 
 describe "Class Variables" do

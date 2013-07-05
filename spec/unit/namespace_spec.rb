@@ -1,4 +1,5 @@
-require_relative '../../lib/graph/namespace'
+require 'spec_helper'
+require 'graph/namespace'
 
 describe Namespace do
   before :all do

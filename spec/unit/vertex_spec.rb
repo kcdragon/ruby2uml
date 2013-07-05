@@ -1,6 +1,7 @@
-require_relative '../../lib/graph/edge'
-require_relative '../../lib/graph/namespace'
-require_relative '../../lib/graph/vertex'
+require 'spec_helper'
+require 'graph/edge'
+require 'graph/namespace'
+require 'graph/vertex'
 
 describe Vertex do
 

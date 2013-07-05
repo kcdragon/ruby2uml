@@ -1,8 +1,8 @@
-require_relative '../../lib/sexp_factory'
-require_relative '../../lib/exploration/dependency_relation'
+require 'spec_helper'
+require 'exploration/dependency_relation'
 require_relative 'sexp_helper'
 
-describe Exploration::DependencyRelation do
+describe DependencyRelation do
   include SexpHelper
   
   context "when there is a dependency" do

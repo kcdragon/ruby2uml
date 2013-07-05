@@ -11,7 +11,7 @@ class GraphGenerator
 
   def initialize
     @graph = Digraph.new
-    @resolve_strategy = Exploration::SimpleResolveStrategy.new
+    @resolve_strategy = SimpleResolveStrategy.new
   end
 
   # Traverse +sexp+ using the given +explorer+ and store the extracted relationships in the +graph+.
